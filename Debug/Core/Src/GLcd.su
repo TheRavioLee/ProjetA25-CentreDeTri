@@ -1,0 +1,12 @@
+../Core/Src/GLcd.c:34:9:ucInputGLcd	24	static
+../Core/Src/GLcd.c:68:6:vOutputGLcd	24	static
+../Core/Src/GLcd.c:99:6:vInitGLcd	8	static
+../Core/Src/GLcd.c:135:6:vClearGLcd	24	static
+../Core/Src/GLcd.c:179:6:vPutPixelGLcd	24	static
+../Core/Src/GLcd.c:238:6:vClearPixelGLcd	24	static
+../Core/Src/GLcd.c:296:6:vDrawLineGLcd	32	static
+../Core/Src/GLcd.c:336:6:vDrawRectangleGLcd	32	static
+../Core/Src/GLcd.c:379:6:vDrawCircleGLcd	32	static
+../Core/Src/GLcd.c:436:6:vPutCharGLcd	32	static
+../Core/Src/GLcd.c:520:6:vPutStringGLcd	24	static
+../Core/Src/GLcd.c:568:6:vPutBMPGLcd	24	static
