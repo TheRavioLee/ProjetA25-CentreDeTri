@@ -41,12 +41,7 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 3
-#define LIRE_IO_PHASE 0
-#define LIRE_ADC_PHASE 1
-#define PROCESSUS_AFFICHAGE_PHASE 2
 
-void doNothing(void);
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -140,6 +135,27 @@ void Error_Handler(void);
 #define SDA_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
+
+//Definitions Base de temps
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 5
+#define ENTREES_NUM_PHASE 0
+#define ENTREE_ANALOGUE_PHASE 1
+#define SORTIES_NUM_PHASE 2
+#define CENTRE_DE_TRI_PHASE 3
+#define PROCESSUS_AFFICHAGE_PHASE 4
+
+
+#define INFORMATION_DISPONIBLE 1
+#define INFORMATION_TRAITEE 0
+#define REQUETE_ACTIVE 1
+#define REQUETE_TRAITEE 0
+#define READ_GOOD 1
+#define READ_FAIL 0
+#define WRITE_GOOD 1
+#define WRITE_FAIL 0
+
+//Fonctions publiques
+void doNothing(void);
 
 /* USER CODE END Private defines */
 
