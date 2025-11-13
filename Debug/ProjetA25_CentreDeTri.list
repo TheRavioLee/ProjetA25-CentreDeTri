@@ -23,9 +23,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   9 .ccmram       00000000  10000000  10000000  0000a07c  2**0
                   CONTENTS
- 10 .bss          000009fc  2000007c  2000007c  0000a07c  2**2
+ 10 .bss          00000a04  2000007c  2000007c  0000a07c  2**2
                   ALLOC
- 11 ._user_heap_stack 00000600  20000a78  20000a78  0000a07c  2**0
+ 11 ._user_heap_stack 00000600  20000a80  20000a80  0000a07c  2**0
                   ALLOC
  12 .ARM.attributes 00000030  00000000  00000000  0000a07c  2**0
                   CONTENTS, READONLY
@@ -37,17 +37,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_rnglists 00000f33  00000000  00000000  00025980  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  0002453b  00000000  00000000  000268b3  2**0
+ 17 .debug_macro  0002461a  00000000  00000000  000268b3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001a26c  00000000  00000000  0004adee  2**0
+ 18 .debug_line   0001a374  00000000  00000000  0004aecd  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000d3159  00000000  00000000  0006505a  2**0
+ 19 .debug_str    000d3331  00000000  00000000  00065241  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  001381b3  2**0
+ 20 .comment      00000043  00000000  00000000  00138572  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  0000565c  00000000  00000000  001381f8  2**2
+ 21 .debug_frame  0000565c  00000000  00000000  001385b8  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 00000076  00000000  00000000  0013d854  2**0
+ 22 .debug_line_str 00000076  00000000  00000000  0013dc14  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1580,6 +1580,8 @@ void Main_Init(void)
  8000d10:	f000 fb66 	bl	80013e0 <piloteTimer14_initialise>
 	serviceBaseDeTemps_initialise();
  8000d14:	f000 fbc2 	bl	800149c <serviceBaseDeTemps_initialise>
+
+
 	processusAffichageInit();
  8000d18:	f000 fb78 	bl	800140c <processusAffichageInit>
 }
@@ -2781,7 +2783,7 @@ void OTG_FS_IRQHandler(void)
  8001332:	bf00      	nop
  8001334:	bd80      	pop	{r7, pc}
  8001336:	bf00      	nop
- 8001338:	20000550 	.word	0x20000550
+ 8001338:	20000558 	.word	0x20000558
 
 0800133c <_sbrk>:
  *
@@ -2862,7 +2864,7 @@ void *_sbrk(ptrdiff_t incr)
  8001398:	20020000 	.word	0x20020000
  800139c:	00000400 	.word	0x00000400
  80013a0:	2000015c 	.word	0x2000015c
- 80013a4:	20000a78 	.word	0x20000a78
+ 80013a4:	20000a80 	.word	0x20000a80
 
 080013a8 <SystemInit>:
   *         configuration.
@@ -2992,7 +2994,7 @@ void processusAffichageInit(void)
   serviceBaseDeTemps_execute[PROCESSUS_AFFICHAGE_PHASE] =
  8001456:	4b03      	ldr	r3, [pc, #12]	@ (8001464 <processusAffichageInit+0x58>)
  8001458:	4a03      	ldr	r2, [pc, #12]	@ (8001468 <processusAffichageInit+0x5c>)
- 800145a:	609a      	str	r2, [r3, #8]
+ 800145a:	611a      	str	r2, [r3, #16]
       processusAffichage_Afficher;
 }
  800145c:	bf00      	nop
@@ -3027,7 +3029,7 @@ unsigned char i;
  8001484:	3301      	adds	r3, #1
  8001486:	71fb      	strb	r3, [r7, #7]
  8001488:	79fb      	ldrb	r3, [r7, #7]
- 800148a:	2b02      	cmp	r3, #2
+ 800148a:	2b04      	cmp	r3, #4
  800148c:	d9f4      	bls.n	8001478 <serviceBaseDeTemps_gere+0xc>
   }
 }
@@ -3064,7 +3066,7 @@ unsigned char i;
  80014b4:	3301      	adds	r3, #1
  80014b6:	71fb      	strb	r3, [r7, #7]
  80014b8:	79fb      	ldrb	r3, [r7, #7]
- 80014ba:	2b02      	cmp	r3, #2
+ 80014ba:	2b04      	cmp	r3, #4
  80014bc:	d9f4      	bls.n	80014a8 <serviceBaseDeTemps_initialise+0xc>
   }
   piloteTimer14_execute = serviceBaseDeTemps_gere;
@@ -3172,7 +3174,7 @@ LoopFillZerobss:
   ldr r2, =_sbss
  8001528:	2000007c 	.word	0x2000007c
   ldr r4, =_ebss
- 800152c:	20000a78 	.word	0x20000a78
+ 800152c:	20000a80 	.word	0x20000a80
 
 08001530 <ADC_IRQHandler>:
  * @retval None       
@@ -3335,7 +3337,7 @@ __weak void HAL_IncTick(void)
  80015f4:	4770      	bx	lr
  80015f6:	bf00      	nop
  80015f8:	20000008 	.word	0x20000008
- 80015fc:	20000170 	.word	0x20000170
+ 80015fc:	20000178 	.word	0x20000178
 
 08001600 <HAL_GetTick>:
   * @note This function is declared as __weak to be overwritten in case of other 
@@ -3355,7 +3357,7 @@ __weak uint32_t HAL_GetTick(void)
  800160c:	f85d 7b04 	ldr.w	r7, [sp], #4
  8001610:	4770      	bx	lr
  8001612:	bf00      	nop
- 8001614:	20000170 	.word	0x20000170
+ 8001614:	20000178 	.word	0x20000178
 
 08001618 <HAL_Delay>:
   *       implementations in user file.
@@ -21606,7 +21608,7 @@ void MX_USB_HOST_Init(void)
  80082c4:	bd80      	pop	{r7, pc}
  80082c6:	bf00      	nop
  80082c8:	080082e9 	.word	0x080082e9
- 80082cc:	20000174 	.word	0x20000174
+ 80082cc:	2000017c 	.word	0x2000017c
  80082d0:	2000000c 	.word	0x2000000c
 
 080082d4 <MX_USB_HOST_Process>:
@@ -21626,7 +21628,7 @@ void MX_USB_HOST_Process(void)
  80082de:	bf00      	nop
  80082e0:	bd80      	pop	{r7, pc}
  80082e2:	bf00      	nop
- 80082e4:	20000174 	.word	0x20000174
+ 80082e4:	2000017c 	.word	0x2000017c
 
 080082e8 <USBH_UserProcess>:
 /*
@@ -21694,7 +21696,7 @@ static void USBH_UserProcess  (USBH_HandleTypeDef *phost, uint8_t id)
  8008338:	f85d 7b04 	ldr.w	r7, [sp], #4
  800833c:	4770      	bx	lr
  800833e:	bf00      	nop
- 8008340:	2000054c 	.word	0x2000054c
+ 8008340:	20000554 	.word	0x20000554
 
 08008344 <HAL_HCD_MspInit>:
                        LL Driver Callbacks (HCD -> USB Host Library)
@@ -22035,7 +22037,7 @@ USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef *phost)
  800851e:	46bd      	mov	sp, r7
  8008520:	bd80      	pop	{r7, pc}
  8008522:	bf00      	nop
- 8008524:	20000550 	.word	0x20000550
+ 8008524:	20000558 	.word	0x20000558
 
 08008528 <USBH_LL_Start>:
   * @brief  Start the low level portion of the host driver.
@@ -22719,7 +22721,7 @@ void MX_DriverVbusFS(uint8_t state)
  80088d2:	d1f2      	bne.n	80088ba <sbrk_aligned+0x22>
  80088d4:	e7ef      	b.n	80088b6 <sbrk_aligned+0x1e>
  80088d6:	bf00      	nop
- 80088d8:	20000930 	.word	0x20000930
+ 80088d8:	20000938 	.word	0x20000938
 
 080088dc <_malloc_r>:
  80088dc:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
@@ -22829,19 +22831,19 @@ void MX_DriverVbusFS(uint8_t state)
  80089d2:	6005      	str	r5, [r0, #0]
  80089d4:	e7d6      	b.n	8008984 <_malloc_r+0xa8>
  80089d6:	bf00      	nop
- 80089d8:	20000934 	.word	0x20000934
+ 80089d8:	2000093c 	.word	0x2000093c
 
 080089dc <__malloc_lock>:
  80089dc:	4801      	ldr	r0, [pc, #4]	@ (80089e4 <__malloc_lock+0x8>)
  80089de:	f000 b84b 	b.w	8008a78 <__retarget_lock_acquire_recursive>
  80089e2:	bf00      	nop
- 80089e4:	20000a70 	.word	0x20000a70
+ 80089e4:	20000a78 	.word	0x20000a78
 
 080089e8 <__malloc_unlock>:
  80089e8:	4801      	ldr	r0, [pc, #4]	@ (80089f0 <__malloc_unlock+0x8>)
  80089ea:	f000 b846 	b.w	8008a7a <__retarget_lock_release_recursive>
  80089ee:	bf00      	nop
- 80089f0:	20000a70 	.word	0x20000a70
+ 80089f0:	20000a78 	.word	0x20000a78
 
 080089f4 <memset>:
  80089f4:	4402      	add	r2, r0
@@ -22866,7 +22868,7 @@ void MX_DriverVbusFS(uint8_t state)
  8008a1a:	b103      	cbz	r3, 8008a1e <_sbrk_r+0x1a>
  8008a1c:	6023      	str	r3, [r4, #0]
  8008a1e:	bd38      	pop	{r3, r4, r5, pc}
- 8008a20:	20000a74 	.word	0x20000a74
+ 8008a20:	20000a7c 	.word	0x20000a7c
 
 08008a24 <__errno>:
  8008a24:	4b01      	ldr	r3, [pc, #4]	@ (8008a2c <__errno+0x8>)
@@ -22981,7 +22983,7 @@ void MX_DriverVbusFS(uint8_t state)
  8008b06:	e7ca      	b.n	8008a9e <_free_r+0x22>
  8008b08:	bd38      	pop	{r3, r4, r5, pc}
  8008b0a:	bf00      	nop
- 8008b0c:	20000934 	.word	0x20000934
+ 8008b0c:	2000093c 	.word	0x2000093c
 
 08008b10 <_init>:
  8008b10:	b5f8      	push	{r3, r4, r5, r6, r7, lr}

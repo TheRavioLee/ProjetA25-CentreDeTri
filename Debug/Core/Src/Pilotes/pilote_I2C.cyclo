@@ -1,0 +1,3 @@
+../Core/Src/Pilotes/pilote_I2C.c:14:9:lectureI2C	2
+../Core/Src/Pilotes/pilote_I2C.c:29:9:lectureI2C_10bits	2
+../Core/Src/Pilotes/pilote_I2C.c:49:9:ecritureI2C	2

@@ -23,6 +23,7 @@ C_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 Core/Src \
+Core/Src/Interfaces \
 Core/Src/Pilotes \
 Core/Src/Processus \
 Core/Src/Services \

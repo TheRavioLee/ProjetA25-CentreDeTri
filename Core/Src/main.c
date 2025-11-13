@@ -19,15 +19,21 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usb_host.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 #include "pilote_Timer14.h"
 #include "processus_Affichage.h"
 #include "ServiceBaseTemps.h"
 #include "GLcd.h"
 #include "IO_BUS.h"
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
+#include "pilote_CAN.h"
+#include "pilote_I2C.h"
+#include "interface_ADC.h"
+#include "processusCentreDeTri.h"
+#include "processusEntreesNumeriques.h"
+#include "processusSortiesNumeriques.h"
+#include "processusEntreeAnalogique.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,6 +81,8 @@ void Main_Init(void)
 {
 	piloteTimer14_initialise();
 	serviceBaseDeTemps_initialise();
+
+
 	processusAffichageInit();
 }
 

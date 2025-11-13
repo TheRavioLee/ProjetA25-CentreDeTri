@@ -18,6 +18,7 @@ RM := rm -rf
 -include Core/Src/Services/subdir.mk
 -include Core/Src/Processus/subdir.mk
 -include Core/Src/Pilotes/subdir.mk
+-include Core/Src/Interfaces/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 

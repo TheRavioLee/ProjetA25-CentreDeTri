@@ -5,12 +5,24 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/Processus/processusCentreDeTri.c \
+../Core/Src/Processus/processusEntreeAnalogique.c \
+../Core/Src/Processus/processusEntreesNumeriques.c \
+../Core/Src/Processus/processusSortiesNumeriques.c \
 ../Core/Src/Processus/processus_Affichage.c 
 
 OBJS += \
+./Core/Src/Processus/processusCentreDeTri.o \
+./Core/Src/Processus/processusEntreeAnalogique.o \
+./Core/Src/Processus/processusEntreesNumeriques.o \
+./Core/Src/Processus/processusSortiesNumeriques.o \
 ./Core/Src/Processus/processus_Affichage.o 
 
 C_DEPS += \
+./Core/Src/Processus/processusCentreDeTri.d \
+./Core/Src/Processus/processusEntreeAnalogique.d \
+./Core/Src/Processus/processusEntreesNumeriques.d \
+./Core/Src/Processus/processusSortiesNumeriques.d \
 ./Core/Src/Processus/processus_Affichage.d 
 
 
@@ -21,7 +33,7 @@ Core/Src/Processus/%.o Core/Src/Processus/%.su Core/Src/Processus/%.cyclo: ../Co
 clean: clean-Core-2f-Src-2f-Processus
 
 clean-Core-2f-Src-2f-Processus:
-	-$(RM) ./Core/Src/Processus/processus_Affichage.cyclo ./Core/Src/Processus/processus_Affichage.d ./Core/Src/Processus/processus_Affichage.o ./Core/Src/Processus/processus_Affichage.su
+	-$(RM) ./Core/Src/Processus/processusCentreDeTri.cyclo ./Core/Src/Processus/processusCentreDeTri.d ./Core/Src/Processus/processusCentreDeTri.o ./Core/Src/Processus/processusCentreDeTri.su ./Core/Src/Processus/processusEntreeAnalogique.cyclo ./Core/Src/Processus/processusEntreeAnalogique.d ./Core/Src/Processus/processusEntreeAnalogique.o ./Core/Src/Processus/processusEntreeAnalogique.su ./Core/Src/Processus/processusEntreesNumeriques.cyclo ./Core/Src/Processus/processusEntreesNumeriques.d ./Core/Src/Processus/processusEntreesNumeriques.o ./Core/Src/Processus/processusEntreesNumeriques.su ./Core/Src/Processus/processusSortiesNumeriques.cyclo ./Core/Src/Processus/processusSortiesNumeriques.d ./Core/Src/Processus/processusSortiesNumeriques.o ./Core/Src/Processus/processusSortiesNumeriques.su ./Core/Src/Processus/processus_Affichage.cyclo ./Core/Src/Processus/processus_Affichage.d ./Core/Src/Processus/processus_Affichage.o ./Core/Src/Processus/processus_Affichage.su
 
 .PHONY: clean-Core-2f-Src-2f-Processus
 

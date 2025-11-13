@@ -5,12 +5,18 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/Pilotes/pilote_CAN.c \
+../Core/Src/Pilotes/pilote_I2C.c \
 ../Core/Src/Pilotes/pilote_Timer14.c 
 
 OBJS += \
+./Core/Src/Pilotes/pilote_CAN.o \
+./Core/Src/Pilotes/pilote_I2C.o \
 ./Core/Src/Pilotes/pilote_Timer14.o 
 
 C_DEPS += \
+./Core/Src/Pilotes/pilote_CAN.d \
+./Core/Src/Pilotes/pilote_I2C.d \
 ./Core/Src/Pilotes/pilote_Timer14.d 
 
 
@@ -21,7 +27,7 @@ Core/Src/Pilotes/%.o Core/Src/Pilotes/%.su Core/Src/Pilotes/%.cyclo: ../Core/Src
 clean: clean-Core-2f-Src-2f-Pilotes
 
 clean-Core-2f-Src-2f-Pilotes:
-	-$(RM) ./Core/Src/Pilotes/pilote_Timer14.cyclo ./Core/Src/Pilotes/pilote_Timer14.d ./Core/Src/Pilotes/pilote_Timer14.o ./Core/Src/Pilotes/pilote_Timer14.su
+	-$(RM) ./Core/Src/Pilotes/pilote_CAN.cyclo ./Core/Src/Pilotes/pilote_CAN.d ./Core/Src/Pilotes/pilote_CAN.o ./Core/Src/Pilotes/pilote_CAN.su ./Core/Src/Pilotes/pilote_I2C.cyclo ./Core/Src/Pilotes/pilote_I2C.d ./Core/Src/Pilotes/pilote_I2C.o ./Core/Src/Pilotes/pilote_I2C.su ./Core/Src/Pilotes/pilote_Timer14.cyclo ./Core/Src/Pilotes/pilote_Timer14.d ./Core/Src/Pilotes/pilote_Timer14.o ./Core/Src/Pilotes/pilote_Timer14.su
 
 .PHONY: clean-Core-2f-Src-2f-Pilotes
 
