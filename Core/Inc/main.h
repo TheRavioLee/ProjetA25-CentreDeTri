@@ -57,6 +57,11 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define TRIAC_CTRL_Pin GPIO_PIN_6
+#define TRIAC_CTRL_GPIO_Port GPIOE
+#define TRIAC_EXTI_Pin GPIO_PIN_13
+#define TRIAC_EXTI_GPIO_Port GPIOC
+#define TRIAC_EXTI_EXTI_IRQn EXTI15_10_IRQn
 #define PC14_OSC32_IN_Pin GPIO_PIN_14
 #define PC14_OSC32_IN_GPIO_Port GPIOC
 #define PC15_OSC32_OUT_Pin GPIO_PIN_15
@@ -67,8 +72,14 @@ void Error_Handler(void);
 #define PH1_OSC_OUT_GPIO_Port GPIOH
 #define OTG_FS_PowerSwitchOn_Pin GPIO_PIN_0
 #define OTG_FS_PowerSwitchOn_GPIO_Port GPIOC
-#define B1_Pin GPIO_PIN_0
-#define B1_GPIO_Port GPIOA
+#define BTN_BLEU_Pin GPIO_PIN_0
+#define BTN_BLEU_GPIO_Port GPIOA
+#define DRIVE_4_Pin GPIO_PIN_5
+#define DRIVE_4_GPIO_Port GPIOA
+#define DRIVE_2_Pin GPIO_PIN_6
+#define DRIVE_2_GPIO_Port GPIOA
+#define DRIVE_3_Pin GPIO_PIN_7
+#define DRIVE_3_GPIO_Port GPIOA
 #define RD_Pin GPIO_PIN_0
 #define RD_GPIO_Port GPIOB
 #define A4_Pin GPIO_PIN_1
@@ -133,6 +144,8 @@ void Error_Handler(void);
 #define SCL_GPIO_Port GPIOB
 #define SDA_Pin GPIO_PIN_9
 #define SDA_GPIO_Port GPIOB
+#define DRIVE_1_Pin GPIO_PIN_0
+#define DRIVE_1_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
 
