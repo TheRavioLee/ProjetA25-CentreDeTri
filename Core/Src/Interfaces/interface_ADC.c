@@ -31,5 +31,5 @@ INTERFACE_ADC interfaceADC;
 void interfaceADC_init(void)
 {
 	interfaceADC.information = INFORMATION_DISPONIBLE;
-	serviceBaseDeTemps_execute[ENTREE_ANALOGUE_PHASE] = lectureADC;
+//	serviceBaseDeTemps_execute[ENTREE_ANALOGUE_PHASE] = lectureADC;
 }

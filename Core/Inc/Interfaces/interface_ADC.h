@@ -9,7 +9,6 @@
 #define INC_INTERFACES_INTERFACE_ADC_H_
 
 //bit shift de << 1 pour adresses de lecture I2C avec HAL
-//I2C HAL fait automatiquement bit shift >> 1
 #define ADDR_ANALOGUE1 (0x4D << 1)
 
 typedef struct {

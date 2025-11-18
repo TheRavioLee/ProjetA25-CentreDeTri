@@ -39,6 +39,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/IO_BUS.h \
  /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_CAN.h \
  /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_I2C.h \
+ /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_PCF8574.h \
  /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_ADC.h \
  /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processusCentreDeTri.h \
  /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processusEntreesNumeriques.h \
@@ -87,6 +88,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/IO_BUS.h:
 /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_CAN.h:
 /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_I2C.h:
+/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_PCF8574.h:
 /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_ADC.h:
 /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processusCentreDeTri.h:
 /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processusEntreesNumeriques.h:
