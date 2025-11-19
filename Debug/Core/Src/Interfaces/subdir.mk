@@ -6,14 +6,17 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Core/Src/Interfaces/interface_ADC.c \
+../Core/Src/Interfaces/interface_BoutonBleu.c \
 ../Core/Src/Interfaces/interface_PCF8574.c 
 
 OBJS += \
 ./Core/Src/Interfaces/interface_ADC.o \
+./Core/Src/Interfaces/interface_BoutonBleu.o \
 ./Core/Src/Interfaces/interface_PCF8574.o 
 
 C_DEPS += \
 ./Core/Src/Interfaces/interface_ADC.d \
+./Core/Src/Interfaces/interface_BoutonBleu.d \
 ./Core/Src/Interfaces/interface_PCF8574.d 
 
 
@@ -24,7 +27,7 @@ Core/Src/Interfaces/%.o Core/Src/Interfaces/%.su Core/Src/Interfaces/%.cyclo: ..
 clean: clean-Core-2f-Src-2f-Interfaces
 
 clean-Core-2f-Src-2f-Interfaces:
-	-$(RM) ./Core/Src/Interfaces/interface_ADC.cyclo ./Core/Src/Interfaces/interface_ADC.d ./Core/Src/Interfaces/interface_ADC.o ./Core/Src/Interfaces/interface_ADC.su ./Core/Src/Interfaces/interface_PCF8574.cyclo ./Core/Src/Interfaces/interface_PCF8574.d ./Core/Src/Interfaces/interface_PCF8574.o ./Core/Src/Interfaces/interface_PCF8574.su
+	-$(RM) ./Core/Src/Interfaces/interface_ADC.cyclo ./Core/Src/Interfaces/interface_ADC.d ./Core/Src/Interfaces/interface_ADC.o ./Core/Src/Interfaces/interface_ADC.su ./Core/Src/Interfaces/interface_BoutonBleu.cyclo ./Core/Src/Interfaces/interface_BoutonBleu.d ./Core/Src/Interfaces/interface_BoutonBleu.o ./Core/Src/Interfaces/interface_BoutonBleu.su ./Core/Src/Interfaces/interface_PCF8574.cyclo ./Core/Src/Interfaces/interface_PCF8574.d ./Core/Src/Interfaces/interface_PCF8574.o ./Core/Src/Interfaces/interface_PCF8574.su
 
 .PHONY: clean-Core-2f-Src-2f-Interfaces
 

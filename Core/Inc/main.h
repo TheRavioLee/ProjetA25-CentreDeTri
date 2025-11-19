@@ -74,12 +74,12 @@ void Error_Handler(void);
 #define OTG_FS_PowerSwitchOn_GPIO_Port GPIOC
 #define BTN_BLEU_Pin GPIO_PIN_0
 #define BTN_BLEU_GPIO_Port GPIOA
-#define DRIVE_4_Pin GPIO_PIN_5
-#define DRIVE_4_GPIO_Port GPIOA
-#define DRIVE_2_Pin GPIO_PIN_6
-#define DRIVE_2_GPIO_Port GPIOA
-#define DRIVE_3_Pin GPIO_PIN_7
-#define DRIVE_3_GPIO_Port GPIOA
+#define PHASE_4_Pin GPIO_PIN_5
+#define PHASE_4_GPIO_Port GPIOA
+#define PHASE_2_Pin GPIO_PIN_6
+#define PHASE_2_GPIO_Port GPIOA
+#define PHASE_3_Pin GPIO_PIN_7
+#define PHASE_3_GPIO_Port GPIOA
 #define RD_Pin GPIO_PIN_0
 #define RD_GPIO_Port GPIOB
 #define A4_Pin GPIO_PIN_1
@@ -144,19 +144,22 @@ void Error_Handler(void);
 #define SCL_GPIO_Port GPIOB
 #define SDA_Pin GPIO_PIN_9
 #define SDA_GPIO_Port GPIOB
-#define DRIVE_1_Pin GPIO_PIN_0
-#define DRIVE_1_GPIO_Port GPIOE
+#define PHASE_1_Pin GPIO_PIN_0
+#define PHASE_1_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
+#define FREQ_BASETEMPS_HZ 1000
+#define FREQ_LECTURE_BTN_HZ 100
 
 //Definitions Base de temps
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 3
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 4
 #define ENTREES_NUM_PHASE 0
 //#define ENTREE_ANALOGUE_PHASE 1
 #define SORTIES_NUM_PHASE 1
-//#define CENTRE_DE_TRI_PHASE 3
-#define PROCESSUS_AFFICHAGE_PHASE 2
+#define INTERFACE_BTN_BLEU_PHASE 2
+#define PROCESSUS_AFFICHAGE_PHASE 3
 
+//#define CENTRE_DE_TRI_PHASE 4
 
 #define INFORMATION_DISPONIBLE 1
 #define INFORMATION_TRAITEE 0

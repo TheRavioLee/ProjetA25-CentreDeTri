@@ -22,15 +22,25 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "pilote_Timer14.h"
-#include "processus_Affichage.h"
-#include "ServiceBaseTemps.h"
 #include "GLcd.h"
 #include "IO_BUS.h"
+
+#include "pilote_MoteurPH1.h"
+#include "pilote_MoteurPH2.h"
+#include "pilote_MoteurPH3.h"
+#include "pilote_MoteurPH4.h"
+#include "pilote_BoutonBleu.h"
+#include "pilote_Timers.h"
 #include "pilote_CAN.h"
 #include "pilote_I2C.h"
+
 #include "interface_PCF8574.h"
 #include "interface_ADC.h"
+#include "interface_BoutonBleu.h"
+
+#include "ServiceBaseTemps.h"
+
+#include "processus_Affichage.h"
 #include "processusCentreDeTri.h"
 #include "processusEntreesNumeriques.h"
 #include "processusSortiesNumeriques.h"
@@ -57,6 +67,7 @@ CAN_HandleTypeDef hcan1;
 
 I2C_HandleTypeDef hi2c1;
 
+TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim14;
 
 /* USER CODE BEGIN PV */
@@ -69,6 +80,7 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_CAN1_Init(void);
 static void MX_TIM14_Init(void);
+static void MX_TIM2_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
@@ -80,9 +92,10 @@ void MX_USB_HOST_Process(void);
 
 void Main_Init(void)
 {
-	piloteTimer14_initialise();
+	piloteTimers_initialise();
 	serviceBaseDeTemps_initialise();
 
+	interface_BoutonBleuInit();
 	processusEntreesNum_Init();
 	processusSortiesNum_Init();
 	processusAffichageInit();
@@ -125,11 +138,13 @@ int main(void)
   MX_USB_HOST_Init();
   MX_CAN1_Init();
   MX_TIM14_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
   Main_Init();
 
   piloteTimer14_permetLesInterruptions();
+  piloteTimer2_permetLesInterruptions();
 
   /* USER CODE END 2 */
 
@@ -262,6 +277,51 @@ static void MX_I2C1_Init(void)
 }
 
 /**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 0;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 16799;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
+
+}
+
+/**
   * @brief TIM14 Initialization Function
   * @param None
   * @retval None
@@ -315,13 +375,13 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, TRIAC_CTRL_Pin|D0_Pin|D1_Pin|D2_Pin
                           |D3_Pin|D4_Pin|D5_Pin|D6_Pin
-                          |D7_Pin|DRIVE_1_Pin, GPIO_PIN_RESET);
+                          |D7_Pin|PHASE_1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, DRIVE_4_Pin|DRIVE_2_Pin|DRIVE_3_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, PHASE_4_Pin|PHASE_2_Pin|PHASE_3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, RD_Pin|A4_Pin|CS0_Pin|CS1_Pin
@@ -333,10 +393,10 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : TRIAC_CTRL_Pin D0_Pin D1_Pin D2_Pin
                            D3_Pin D4_Pin D5_Pin D6_Pin
-                           D7_Pin DRIVE_1_Pin */
+                           D7_Pin PHASE_1_Pin */
   GPIO_InitStruct.Pin = TRIAC_CTRL_Pin|D0_Pin|D1_Pin|D2_Pin
                           |D3_Pin|D4_Pin|D5_Pin|D6_Pin
-                          |D7_Pin|DRIVE_1_Pin;
+                          |D7_Pin|PHASE_1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -357,12 +417,12 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : BTN_BLEU_Pin */
   GPIO_InitStruct.Pin = BTN_BLEU_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BTN_BLEU_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : DRIVE_4_Pin DRIVE_2_Pin DRIVE_3_Pin */
-  GPIO_InitStruct.Pin = DRIVE_4_Pin|DRIVE_2_Pin|DRIVE_3_Pin;
+  /*Configure GPIO pins : PHASE_4_Pin PHASE_2_Pin PHASE_3_Pin */
+  GPIO_InitStruct.Pin = PHASE_4_Pin|PHASE_2_Pin|PHASE_3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

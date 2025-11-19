@@ -1,0 +1,2 @@
+../Core/Src/Pilotes/pilote_MoteurPH2.c:10:6:moteurPH2_set	8	static
+../Core/Src/Pilotes/pilote_MoteurPH2.c:15:6:moteurPH2_reset	8	static
