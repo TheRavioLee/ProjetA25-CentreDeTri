@@ -1,5 +1,5 @@
-Core/Src/Processus/processus_Affichage.o: \
- ../Core/Src/Processus/processus_Affichage.c ../Core/Inc/main.h \
+Core/Src/Interfaces/interface_Moteur.o: \
+ ../Core/Src/Interfaces/interface_Moteur.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -32,14 +32,12 @@ Core/Src/Processus/processus_Affichage.o: \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
- ../Core/Inc/GLcd.h ../Core/Inc/IO_BUS.h ../Core/Inc/main.h \
- /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processus_Affichage.h \
- /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Services/ServiceBaseTemps.h \
- /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processusSortiesNumeriques.h \
- /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processusEntreesNumeriques.h \
- /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_PCF8574.h \
- /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_ADC.h \
- /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_BoutonBleu.h
+ /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Services/serviceBaseTemps.h \
+ /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_MoteurPH1.h \
+ /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_MoteurPH2.h \
+ /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_MoteurPH3.h \
+ /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_MoteurPH4.h \
+ /Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_Moteur.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -73,13 +71,9 @@ Core/Src/Processus/processus_Affichage.o: \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_hcd.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h:
-../Core/Inc/GLcd.h:
-../Core/Inc/IO_BUS.h:
-../Core/Inc/main.h:
-/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processus_Affichage.h:
-/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Services/ServiceBaseTemps.h:
-/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processusSortiesNumeriques.h:
-/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Processus/processusEntreesNumeriques.h:
-/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_PCF8574.h:
-/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_ADC.h:
-/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_BoutonBleu.h:
+/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Services/serviceBaseTemps.h:
+/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_MoteurPH1.h:
+/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_MoteurPH2.h:
+/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_MoteurPH3.h:
+/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Pilotes/pilote_MoteurPH4.h:
+/Users/thomaslajoie/STM32CubeIDE/workspace_1.18.0/ProjetA25_CentreDeTri/Core/Inc/Interfaces/interface_Moteur.h:

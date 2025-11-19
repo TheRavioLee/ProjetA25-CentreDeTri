@@ -1,2 +1,2 @@
 ../Core/Src/Interfaces/interface_ADC.c:16:6:lectureADC	8	static
-../Core/Src/Interfaces/interface_ADC.c:31:6:interfaceADC_init	4	static
+../Core/Src/Interfaces/interface_ADC.c:25:6:interfaceADC_Init	4	static

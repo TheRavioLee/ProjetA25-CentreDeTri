@@ -152,12 +152,13 @@ void Error_Handler(void);
 #define FREQ_LECTURE_BTN_HZ 100
 
 //Definitions Base de temps
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 4
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 6
 #define ENTREES_NUM_PHASE 0
-//#define ENTREE_ANALOGUE_PHASE 1
-#define SORTIES_NUM_PHASE 1
-#define INTERFACE_BTN_BLEU_PHASE 2
-#define PROCESSUS_AFFICHAGE_PHASE 3
+#define ENTREE_ANALOGUE_PHASE 1
+#define SORTIES_NUM_PHASE 2
+#define INTERFACE_BTN_BLEU_PHASE 3
+#define PROCESSUS_AFFICHAGE_PHASE 4
+#define MOTEUR_PHASE 5
 
 //#define CENTRE_DE_TRI_PHASE 4
 
@@ -169,6 +170,10 @@ void Error_Handler(void);
 #define READ_FAIL 0
 #define WRITE_GOOD 1
 #define WRITE_FAIL 0
+
+#define BOUTON_RELACHE 0
+#define BOUTON_APPUYE 1
+#define BOUTON_INCONNU 2
 
 //Fonctions publiques
 void doNothing(void);

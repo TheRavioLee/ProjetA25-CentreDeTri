@@ -25,6 +25,7 @@
 #include "GLcd.h"
 #include "IO_BUS.h"
 
+#include "pilote_Triac.h"
 #include "pilote_MoteurPH1.h"
 #include "pilote_MoteurPH2.h"
 #include "pilote_MoteurPH3.h"
@@ -34,6 +35,8 @@
 #include "pilote_CAN.h"
 #include "pilote_I2C.h"
 
+#include "interface_Moteur.h"
+#include "interface_Triac.h"
 #include "interface_PCF8574.h"
 #include "interface_ADC.h"
 #include "interface_BoutonBleu.h"
@@ -95,6 +98,8 @@ void Main_Init(void)
 	piloteTimers_initialise();
 	serviceBaseDeTemps_initialise();
 
+	interfaceMoteur_Init();
+	interfaceADC_Init();
 	interface_BoutonBleuInit();
 	processusEntreesNum_Init();
 	processusSortiesNum_Init();
@@ -337,7 +342,7 @@ static void MX_TIM14_Init(void)
 
   /* USER CODE END TIM14_Init 1 */
   htim14.Instance = TIM14;
-  htim14.Init.Prescaler = 335;
+  htim14.Init.Prescaler = 2;
   htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim14.Init.Period = 55999;
   htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

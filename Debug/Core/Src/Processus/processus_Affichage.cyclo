@@ -1,3 +1,4 @@
-../Core/Src/Processus/processus_Affichage.c:27:6:byteToBinary	3
-../Core/Src/Processus/processus_Affichage.c:36:6:processusAffichage_Afficher	1
-../Core/Src/Processus/processus_Affichage.c:101:6:processusAffichageInit	1
+../Core/Src/Processus/processus_Affichage.c:35:6:uint16ToHex	1
+../Core/Src/Processus/processus_Affichage.c:44:6:byteToBinary	3
+../Core/Src/Processus/processus_Affichage.c:53:6:processusAffichage_Afficher	3
+../Core/Src/Processus/processus_Affichage.c:143:6:processusAffichageInit	1
