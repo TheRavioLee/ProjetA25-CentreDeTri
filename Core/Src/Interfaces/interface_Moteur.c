@@ -15,47 +15,50 @@
 void simuleMoteur(void);
 
 uint16_t compteurMoteur;
-uint8_t phase;
 
+uint8_t sequence_halfstep[8][4] = {
+		{1,0,0,0},
+		{1,1,0,0},
+		{0,1,0,0},
+		{0,1,1,0},
+		{0,0,1,0},
+		{0,0,1,1},
+		{0,0,0,1},
+		{1,0,0,1}
+};
+
+void controleMoteur(uint8_t ph1, uint8_t ph2, uint8_t ph3, uint8_t ph4)
+{
+	ph1 == 1 ? moteurPH1_set() : moteurPH1_reset();
+	ph2 == 1 ? moteurPH2_set() : moteurPH2_reset();
+	ph3 == 1 ? moteurPH3_set() : moteurPH3_reset();
+	ph4 == 1 ? moteurPH4_set() : moteurPH4_reset();
+}
 
 void simuleMoteur(void)
 {
+	static int8_t step_index = 0;
+
 	compteurMoteur++;
 
-	if (compteurMoteur == 50)
+	if (compteurMoteur == interfaceMoteur.vitesseMoteur)
 	{
 		compteurMoteur = 0;
 
-		switch(phase)
-		{
-		case 1:
-			moteurPH4_reset();
-			moteurPH1_set();
-			break;
-		case 2:
-			moteurPH1_reset();
-			moteurPH2_set();
-			break;
-		case 3:
-			moteurPH2_reset();
-			moteurPH3_set();
-			break;
-		case 4:
-			moteurPH3_reset();
-			moteurPH4_set();
-			break;
-		}
+		step_index += interfaceMoteur.directionMoteur;
 
-		if(phase == 4)
-		{
-			phase = 1;
-		}
-		else
-		{
-			phase++;
-		}
+		if(step_index > 7) { step_index = 0; }
+		if(step_index < 0) { step_index = 7; }
+
+		controleMoteur(
+				sequence_halfstep[step_index][0],
+				sequence_halfstep[step_index][1],
+				sequence_halfstep[step_index][2],
+				sequence_halfstep[step_index][3]);
 	}
 }
+
+INTERFACE_MOTEUR interfaceMoteur;
 
 void interfaceMoteur_Init(void)
 {
@@ -64,7 +67,8 @@ void interfaceMoteur_Init(void)
 	moteurPH3_reset();
 	moteurPH4_reset();
 
-	phase = 1;
+	interfaceMoteur.directionMoteur = MONTER;
+	interfaceMoteur.vitesseMoteur = VITESSE_LENT;
 	compteurMoteur = 0;
 	serviceBaseDeTemps_execute[MOTEUR_PHASE] = simuleMoteur;
 }

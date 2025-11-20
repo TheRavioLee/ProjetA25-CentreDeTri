@@ -12,6 +12,7 @@
 #include "processusEntreesNumeriques.h"
 #include "interface_ADC.h"
 #include "interface_BoutonBleu.h"
+#include "interface_Moteur.h"
 
 uint8_t base_affichage[8][23] = {
 		{"OUT: 1,2 | IN 3,4,5  "},
@@ -68,6 +69,15 @@ void processusAffichage_Afficher(void)
 
 		if(interfaceBtnBleu.etatBouton == BOUTON_APPUYE)
 		{
+			switch (interfaceMoteur.directionMoteur)
+			{
+			case MONTER:
+				interfaceMoteur.directionMoteur = DESCENDRE;
+				break;
+			case DESCENDRE:
+				interfaceMoteur.directionMoteur = MONTER;
+				break;
+			}
 			boutonBleu = '1';
 		}
 		else
