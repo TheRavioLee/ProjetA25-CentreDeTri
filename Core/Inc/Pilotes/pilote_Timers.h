@@ -12,6 +12,7 @@
 //Fonctions publiques:
 void piloteTimers_initialise(void);
 void piloteTimer14_permetLesInterruptions(void);
+void piloteTimer14_arreteLesInterruptions(void);
 void piloteTimer2_permetLesInterruptions(void);
 
 //Variables publiques:

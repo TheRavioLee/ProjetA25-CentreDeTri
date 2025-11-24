@@ -12,9 +12,11 @@ void processusSortiesNum_Ecrire(void);
 
 void processusSortiesNum_Ecrire(void)
 {
-	interfacePCF8574.sortiesCarte1 = ~0x01;
-	interfacePCF8574.sortiesCarte2 = ~0x80;
-	ecritureSorties();
+	if (interfacePCF8574.requete == REQUETE_ACTIVE)
+	{
+		ecritureSorties();
+		interfacePCF8574.requete = REQUETE_TRAITEE;
+	}
 }
 
 void processusSortiesNum_Init(void)

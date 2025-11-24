@@ -98,12 +98,14 @@ void Main_Init(void)
 	piloteTimers_initialise();
 	serviceBaseDeTemps_initialise();
 
+	interfacePCF8574_init();
 	interfaceMoteur_Init();
 	interfaceADC_Init();
 	interface_BoutonBleuInit();
 	processusEntreesNum_Init();
 	processusSortiesNum_Init();
 	processusAffichageInit();
+	processusCentreDeTri_Init();
 }
 
 void doNothing(void){}

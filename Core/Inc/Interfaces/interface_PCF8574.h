@@ -18,7 +18,9 @@
 #define ADDR_SORTIE_CARTE2 (0x3D << 1)
 
 typedef struct {
+	uint8_t mode;
 	uint8_t information;
+	uint8_t requete;
 	uint8_t entreesCarte1;
 	uint8_t entreesCarte2;
 	uint8_t entreesCarte3;

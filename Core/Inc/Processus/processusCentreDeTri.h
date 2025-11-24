@@ -10,4 +10,7 @@
 
 
 
+void processusCentreDeTri_Init(void);
+
+
 #endif /* INC_PROCESSUS_PROCESSUSCENTREDETRI_H_ */

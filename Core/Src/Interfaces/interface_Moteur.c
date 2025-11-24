@@ -35,6 +35,11 @@ void controleMoteur(uint8_t ph1, uint8_t ph2, uint8_t ph3, uint8_t ph4)
 	ph4 == 1 ? moteurPH4_set() : moteurPH4_reset();
 }
 
+//Modifier fonction et struct interface pour init en arret
+//si requete processusCentreDeTri -> demarrer moteur
+// attente.....
+//Remonter jusqua limit switch et arreter
+
 void simuleMoteur(void)
 {
 	static int8_t step_index = 0;

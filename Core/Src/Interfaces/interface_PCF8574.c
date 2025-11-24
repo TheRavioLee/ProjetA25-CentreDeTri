@@ -10,10 +10,27 @@
 #include "pilote_I2C.h"
 #include "interface_PCF8574.h"
 
+uint8_t reverse8(uint8_t x);
+
+uint8_t reverse8(uint8_t x)
+{
+    uint8_t r = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        r <<= 1;
+        r |= (x & 1);
+        x >>= 1;
+    }
+    return r;
+}
+
 void lectureEntrees(void)
 {
+	uint8_t tempCarte2;
+
 	interfacePCF8574.entreesCarte1 = lectureI2C(ADDR_ENTREE_CARTE1);
-	interfacePCF8574.entreesCarte2 = ~lectureI2C(ADDR_ENTREE_CARTE2);
+	tempCarte2 = ~lectureI2C(ADDR_ENTREE_CARTE2);
+	interfacePCF8574.entreesCarte2 = reverse8(tempCarte2);
 	interfacePCF8574.entreesCarte3 = ~lectureI2C(ADDR_ENTREE_CARTE3);
 }
 
@@ -29,6 +46,15 @@ INTERFACE_PCF8574 interfacePCF8574;
 //fonctions publiques
 void interfacePCF8574_init(void)
 {
+	interfacePCF8574.entreesCarte1 = 0x00;
+	interfacePCF8574.entreesCarte2 = 0x00;
+	interfacePCF8574.entreesCarte3 = 0x00;
+
+	interfacePCF8574.sortiesCarte1 = 0x01;
+	interfacePCF8574.sortiesCarte2 = 0x80;
+
+	interfacePCF8574.information = INFORMATION_TRAITEE;
+	interfacePCF8574.requete = REQUETE_ACTIVE;
 //	serviceBaseDeTemps_execute[ENTREES_NUM_PHASE] = lectureEntrees;
 //	serviceBaseDeTemps_execute[SORTIES_NUM_PHASE] = ecritureSorties;
 }

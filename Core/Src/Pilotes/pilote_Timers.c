@@ -28,13 +28,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   }
   if(htim == &htim2)
   {
-
+	  //Timer pour detection passage par zero
+	  //mettre compteur a 0 lors de passage a zero pour compter 100us
   }
 }
 
 void piloteTimer14_permetLesInterruptions(void)
 {
   HAL_TIM_Base_Start_IT(&htim14);
+}
+
+void piloteTimer14_arreteLesInterruptions(void)
+{
+	HAL_TIM_Base_Stop_IT(&htim14);
 }
 
 void piloteTimer2_permetLesInterruptions(void)

@@ -13,7 +13,21 @@ void processusEntreesNum_Lire(void);
 
 void processusEntreesNum_Lire(void)
 {
-	lectureEntrees();
+	uint8_t carteEntrees1 = interfacePCF8574.entreesCarte1;
+	uint8_t carteEntrees2 = interfacePCF8574.entreesCarte2;
+	uint8_t carteEntrees3 = interfacePCF8574.entreesCarte3;
+
+	if (interfacePCF8574.information != INFORMATION_DISPONIBLE)
+	{
+		lectureEntrees();
+	}
+
+	if (carteEntrees1 != interfacePCF8574.entreesCarte1
+			|| carteEntrees2 != interfacePCF8574.entreesCarte2
+			|| carteEntrees3 != interfacePCF8574.entreesCarte3)
+	{
+		interfacePCF8574.information = INFORMATION_DISPONIBLE;
+	}
 }
 
 void processusEntreesNum_Init(void)

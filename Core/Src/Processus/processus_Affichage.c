@@ -22,7 +22,7 @@ uint8_t base_affichage[8][23] = {
 		{"4    XXXX   XXXX     "},
 		{"5    XXXX   XXXX     "},
 		{"BTN BLEU:            "},
-		{"ADC: 0x              "}
+		{"ADC: 0x      MODE:X  "}
 };
 
 
@@ -65,20 +65,32 @@ void processusAffichage_Afficher(void)
 
 	if(interfaceBtnBleu.information == INFORMATION_DISPONIBLE)
 	{
-		interfaceBtnBleu.information = INFORMATION_TRAITEE;
+//		interfaceBtnBleu.information = INFORMATION_TRAITEE;
 
 		if(interfaceBtnBleu.etatBouton == BOUTON_APPUYE)
 		{
-			switch (interfaceMoteur.directionMoteur)
-			{
-			case MONTER:
-				interfaceMoteur.directionMoteur = DESCENDRE;
-				break;
-			case DESCENDRE:
-				interfaceMoteur.directionMoteur = MONTER;
-				break;
-			}
+//			switch (interfaceMoteur.directionMoteur)
+//			{
+//			case MONTER:
+//				interfaceMoteur.directionMoteur = DESCENDRE;
+//				break;
+//			case DESCENDRE:
+//				interfaceMoteur.directionMoteur = MONTER;
+//				break;
+//			}
 			boutonBleu = '1';
+
+//			if (interfacePCF8574.requete == REQUETE_TRAITEE)
+//			{
+//				if(EJECT_POS_SORTIE_SOLE722 == 0)
+//				{
+//					SET_EJECT_POS_SORTIE_SOLE722();
+//				}
+//				else
+//				{
+//					CLEAR_EJECT_POS_SORTIE_SOLE722();
+//				}
+//			}
 		}
 		else
 		{
@@ -114,37 +126,58 @@ void processusAffichage_Afficher(void)
 	vPutCharGLcd(sorties_Num2[6], 2, 14, 5);
 	vPutCharGLcd(sorties_Num2[7], 2, 15, 5);
 
-	vPutCharGLcd(entrees_Num1[0], 3, 5, 5);
-	vPutCharGLcd(entrees_Num1[1], 3, 6, 5);
-	vPutCharGLcd(entrees_Num1[2], 3, 7, 5);
-	vPutCharGLcd(entrees_Num1[3], 3, 8, 5);
-	vPutCharGLcd(entrees_Num1[4], 3, 12, 5);
-	vPutCharGLcd(entrees_Num1[5], 3, 13, 5);
-	vPutCharGLcd(entrees_Num1[6], 3, 14, 5);
-	vPutCharGLcd(entrees_Num1[7], 3, 15, 5);
+//	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
+//	{
+//		interfacePCF8574.information = INFORMATION_TRAITEE;
 
-	vPutCharGLcd(entrees_Num2[0], 4, 5, 5);
-	vPutCharGLcd(entrees_Num2[1], 4, 6, 5);
-	vPutCharGLcd(entrees_Num2[2], 4, 7, 5);
-	vPutCharGLcd(entrees_Num2[3], 4, 8, 5);
-	vPutCharGLcd(entrees_Num2[4], 4, 12, 5);
-	vPutCharGLcd(entrees_Num2[5], 4, 13, 5);
-	vPutCharGLcd(entrees_Num2[6], 4, 14, 5);
-	vPutCharGLcd(entrees_Num2[7], 4, 15, 5);
+		vPutCharGLcd(entrees_Num1[0], 3, 5, 5);
+		vPutCharGLcd(entrees_Num1[1], 3, 6, 5);
+		vPutCharGLcd(entrees_Num1[2], 3, 7, 5);
+		vPutCharGLcd(entrees_Num1[3], 3, 8, 5);
+		vPutCharGLcd(entrees_Num1[4], 3, 12, 5);
+		vPutCharGLcd(entrees_Num1[5], 3, 13, 5);
+		vPutCharGLcd(entrees_Num1[6], 3, 14, 5);
+		vPutCharGLcd(entrees_Num1[7], 3, 15, 5);
 
-	vPutCharGLcd(entrees_Num3[0], 5, 5, 5);
-	vPutCharGLcd(entrees_Num3[1], 5, 6, 5);
-	vPutCharGLcd(entrees_Num3[2], 5, 7, 5);
-	vPutCharGLcd(entrees_Num3[3], 5, 8, 5);
-	vPutCharGLcd(entrees_Num3[4], 5, 12, 5);
-	vPutCharGLcd(entrees_Num3[5], 5, 13, 5);
-	vPutCharGLcd(entrees_Num3[6], 5, 14, 5);
-	vPutCharGLcd(entrees_Num3[7], 5, 15, 5);
+		vPutCharGLcd(entrees_Num2[0], 4, 5, 5);
+		vPutCharGLcd(entrees_Num2[1], 4, 6, 5);
+		vPutCharGLcd(entrees_Num2[2], 4, 7, 5);
+		vPutCharGLcd(entrees_Num2[3], 4, 8, 5);
+		vPutCharGLcd(entrees_Num2[4], 4, 12, 5);
+		vPutCharGLcd(entrees_Num2[5], 4, 13, 5);
+		vPutCharGLcd(entrees_Num2[6], 4, 14, 5);
+		vPutCharGLcd(entrees_Num2[7], 4, 15, 5);
+
+		vPutCharGLcd(entrees_Num3[0], 5, 5, 5);
+		vPutCharGLcd(entrees_Num3[1], 5, 6, 5);
+		vPutCharGLcd(entrees_Num3[2], 5, 7, 5);
+		vPutCharGLcd(entrees_Num3[3], 5, 8, 5);
+		vPutCharGLcd(entrees_Num3[4], 5, 12, 5);
+		vPutCharGLcd(entrees_Num3[5], 5, 13, 5);
+		vPutCharGLcd(entrees_Num3[6], 5, 14, 5);
+		vPutCharGLcd(entrees_Num3[7], 5, 15, 5);
+//	}
 
 	vPutCharGLcd(entree_ADC[0], 7, 7, 5);
 	vPutCharGLcd(entree_ADC[1], 7, 8, 5);
 	vPutCharGLcd(entree_ADC[2], 7, 9, 5);
 	vPutCharGLcd(entree_ADC[3], 7, 10, 5);
+
+	switch (interfacePCF8574.mode)
+	{
+	case ATTENTE:
+		vPutCharGLcd('W', 7, 18, 5);
+		break;
+	case ARRET:
+		vPutCharGLcd('A', 7, 18, 5);
+		break;
+	case OPERATION:
+		vPutCharGLcd('O', 7, 18, 5);
+		break;
+	case TEST:
+		vPutCharGLcd('T', 7, 18, 5);
+		break;
+	}
 }
 
 
