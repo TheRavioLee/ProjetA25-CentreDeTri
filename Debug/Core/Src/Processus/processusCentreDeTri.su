@@ -1,8 +1,8 @@
 ../Core/Src/Processus/processusCentreDeTri.c:33:6:processusCentreModeAttente	4	static
-../Core/Src/Processus/processusCentreDeTri.c:78:6:processusCentreModeArret	4	static
-../Core/Src/Processus/processusCentreDeTri.c:146:6:processusCentreModeTest	4	static
-../Core/Src/Processus/processusCentreDeTri.c:153:6:processusCentreTestEntrees	4	static
-../Core/Src/Processus/processusCentreDeTri.c:189:6:processusCentreTestVerinMagasin	4	static
-../Core/Src/Processus/processusCentreDeTri.c:231:6:processusCentreModeOperation	4	static
-../Core/Src/Processus/processusCentreDeTri.c:236:6:processusCentreModeErreur	8	static
-../Core/Src/Processus/processusCentreDeTri.c:241:6:processusCentreDeTri_Init	4	static
+../Core/Src/Processus/processusCentreDeTri.c:77:6:processusCentreModeArret	16	static
+../Core/Src/Processus/processusCentreDeTri.c:141:6:processusCentreModeTest	4	static
+../Core/Src/Processus/processusCentreDeTri.c:148:6:processusCentreTestEntrees	4	static
+../Core/Src/Processus/processusCentreDeTri.c:187:6:processusCentreTestVerinMagasin	4	static
+../Core/Src/Processus/processusCentreDeTri.c:232:6:processusCentreModeOperation	4	static
+../Core/Src/Processus/processusCentreDeTri.c:237:6:processusCentreModeErreur	8	static
+../Core/Src/Processus/processusCentreDeTri.c:242:6:processusCentreDeTri_Init	4	static

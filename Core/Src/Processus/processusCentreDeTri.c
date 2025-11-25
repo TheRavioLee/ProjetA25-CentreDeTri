@@ -37,11 +37,10 @@ void processusCentreModeAttente(void)
 	// si erreur -> mode erreur bloquant
 	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
 	{
-		interfacePCF8574.information = INFORMATION_TRAITEE;
-
-		if ((interfacePCF8574.entreesCarte1 & ~0xD5) != 0			//0x55= init
+		if ((interfacePCF8574.entreesCarte1 & ~0x55) != 0			//0x55= init
 				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0) 	//0x30 = init, sauf boutons rouge/vert
 		{
+			interfacePCF8574.information = INFORMATION_TRAITEE;
 			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 					processusCentreModeErreur;
 			return;
@@ -72,76 +71,72 @@ void processusCentreModeAttente(void)
 		return;
 	}
 
-
+	interfacePCF8574.information = INFORMATION_TRAITEE; //si changement mais aucune condition -> lecture encore
 }
 
 void processusCentreModeArret(void)
 {
-	static uint8_t compteurAppuye = 0;
-	static uint8_t compteurAntiRebond = 0;
-	static uint16_t timerDoublePress = 0;
-	static uint8_t etatPrecedent = BOUTON_RELACHE;
+    static uint8_t compteurAppuye = 0;
+    static uint16_t timerDoublePress = 0;
 
-	interfacePCF8574.mode = ARRET;
+    static uint8_t etatStable = BOUTON_RELACHE;      // debounced state
+    static uint8_t compteurStabilite = 0;            // debounce counter
 
-	if (interfacePCF8574.information != INFORMATION_DISPONIBLE)
-	{
-		return;
-	}
+    uint8_t etatBrut = BOUTON_VERT;                  // 0 or 1
 
-	interfacePCF8574.information = INFORMATION_TRAITEE;
+    interfacePCF8574.mode = ARRET;
+    interfacePCF8574.information = INFORMATION_TRAITEE;
 
-	if (BOUTON_VERT != etatPrecedent)
-	{
-		compteurAntiRebond = 3;
-	}
+    // ---- Debounce ----
+    if (etatBrut != etatStable)
+    {
+        compteurStabilite++;
+        if (compteurStabilite >= 3)   // 3 × 10ms = 30ms
+        {
+            etatStable = etatBrut;    // accept new stable state
+            compteurStabilite = 0;
+        }
+    }
+    else
+    {
+        compteurStabilite = 0;        // stable again
+    }
 
-	if (compteurAntiRebond > 0)
-	{
-		compteurAntiRebond--;
-		etatPrecedent = BOUTON_VERT;
-		return;
-	}
+    // ---- Rising edge detection ----
+    static uint8_t ancienEtat = BOUTON_RELACHE;
 
-	//Front montant detecte
-	if (etatPrecedent == BOUTON_RELACHE && BOUTON_VERT == BOUTON_APPUYE)
-	{
-		compteurAppuye++;
+    if (ancienEtat == BOUTON_RELACHE &&
+        etatStable == BOUTON_APPUYE)
+    {
+        // RISING EDGE
+        compteurAppuye++;
 
-		if (compteurAppuye == 1)
-		{
-			timerDoublePress = 0;
-		}
-		else if (compteurAppuye == 2)
-		{
-			if (timerDoublePress < 300)
-			{
-				serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
-								processusCentreModeAttente;
+        if (compteurAppuye == 1)
+        {
+            timerDoublePress = 0;
+        }
+        else if (compteurAppuye == 2 && timerDoublePress < 1000)
+        {
+            serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+                    processusCentreModeOperation;
 
-				compteurAppuye = 0;
-				etatPrecedent = BOUTON_VERT;
-				return;
-			}
-			else
-			{
-				compteurAppuye = 1;
-				timerDoublePress = 0;
-			}
-		}
-	}
+            compteurAppuye = 0;
+            ancienEtat = etatStable;
+            return;
+        }
+    }
 
-	etatPrecedent = BOUTON_VERT;
+    ancienEtat = etatStable;
 
-	if (compteurAppuye > 0)
-	{
-		timerDoublePress += 10;
-		if (timerDoublePress > 300)
-		{
-			compteurAppuye = 0;
-		}
-	}
+    // ---- Double-press timeout ----
+    if (compteurAppuye > 0)
+    {
+        timerDoublePress += 10;
+        if (timerDoublePress >= 1000)
+            compteurAppuye = 0;
+    }
 }
+
 
 void processusCentreModeTest(void)
 {
@@ -159,6 +154,7 @@ void processusCentreTestEntrees(void)
 		if ((interfacePCF8574.entreesCarte1 & ~0x55) != 0			//0x55 = init
 				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0) 	//0x30 = init, sauf boutons rouge/vert
 		{
+			interfacePCF8574.information = INFORMATION_TRAITEE;
 			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 					processusCentreModeErreur;
 			return;
@@ -184,6 +180,8 @@ void processusCentreTestEntrees(void)
 				processusCentreTestVerinMagasin;
 		return;
 	}
+
+	interfacePCF8574.information = INFORMATION_TRAITEE; //si changement mais aucune condition -> lecture encore
 }
 
 void processusCentreTestVerinMagasin(void)
@@ -197,6 +195,7 @@ void processusCentreTestVerinMagasin(void)
 		if ((interfacePCF8574.entreesCarte1 & ~0xD5) != 0			//0xD5 = init, sauf poussoir = sortie
 				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0) 	//0x30 = init sauf boutons rouge/vert
 		{
+			interfacePCF8574.information = INFORMATION_TRAITEE;
 			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 					processusCentreModeErreur;
 			return;
@@ -226,6 +225,8 @@ void processusCentreTestVerinMagasin(void)
 
 		}
 	}
+
+	interfacePCF8574.information = INFORMATION_TRAITEE; //si changement mais aucune condition -> lecture encore
 }
 
 void processusCentreModeOperation(void)
