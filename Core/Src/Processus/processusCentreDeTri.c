@@ -19,6 +19,8 @@
 
 #define TEMPS_MAXIMUM 250 // 250 * 9ms = ~2.5s
 
+uint8_t modeCentreTri;
+
 //Fonctions privees
 void processusCentreModeAttente(void);
 void processusCentreModeTest(void);
@@ -28,7 +30,8 @@ void processusCentreTestVerinMagasin(void);
 void processusCentreTestElevateur(void);
 void processusCentreTestConvoyeur(void);
 void processusCentreTestEjecteur(void);
-void processusCentreTestVentouse(void);
+void processusCentreTestVentouseVaccum(void);
+void processusCentreTestVentouseHauteur(void);
 
 void processusCentreModeOperation(void);
 void processusCentreModeArret(void);
@@ -36,7 +39,7 @@ void processusCentreModeErreur(void);
 
 void processusCentreModeAttente(void)
 {
-  	interfacePCF8574.mode = ATTENTE;
+	modeCentreTri = ATTENTE;
 	//faire lecture des entrees pour assurer aucune erreur
 	// si erreur -> mode erreur bloquant
 	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
@@ -88,7 +91,7 @@ void processusCentreModeArret(void)
 
     uint8_t etatBrut = BOUTON_VERT;                  // 0 or 1
 
-    interfacePCF8574.mode = ARRET;
+    modeCentreTri = ARRET;
     interfacePCF8574.information = INFORMATION_TRAITEE;
 
     // ---- Debounce ----
@@ -144,15 +147,13 @@ void processusCentreModeArret(void)
 
 void processusCentreModeTest(void)
 {
-	interfacePCF8574.mode = TEST;
+	modeCentreTri = TEST;
 	serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 			processusCentreTestEntrees;
 }
 
 void processusCentreTestEntrees(void)
 {
-	//if ENTREES != EXPECTED
-	// phaseCentre = ModeErreur;
 	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
 	{
 		if ((interfacePCF8574.entreesCarte1 & ~0x55) != 0			//0x55 = init
@@ -177,9 +178,8 @@ void processusCentreTestEntrees(void)
 	{
 		interfacePCF8574.information = INFORMATION_TRAITEE;
 		interfacePCF8574.requete = REQUETE_ACTIVE;
-		//activer verin position sortie
-		CLEAR_EJECT_POS_ENTREE_SOLE719();
-		SET_EJECT_POS_SORTIE_SOLE722();
+		CLEAR_POUSSOIR_POS_ENTREE_SOLE719();
+		SET_POUSSOIR_POS_SORTIE_SOLE722();
 		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 				processusCentreTestVerinMagasin;
 		return;
@@ -196,7 +196,7 @@ void processusCentreTestVerinMagasin(void)
 
 	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
 	{
-		if ((interfacePCF8574.entreesCarte1 & ~0x95) != 0			//0x95 = init, sauf poussoir = sortie
+		if ((interfacePCF8574.entreesCarte1 & ~0x55) != 0			//0x95 = init, sauf poussoir = sortie
 				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0) 	//0x30 = init sauf boutons rouge/vert
 		{
 			interfacePCF8574.information = INFORMATION_TRAITEE;
@@ -216,8 +216,8 @@ void processusCentreTestVerinMagasin(void)
 
 	if (compteurVerin == TEMPS_MAXIMUM)
 	{
-		CLEAR_EJECT_POS_SORTIE_SOLE722();
-		SET_EJECT_POS_ENTREE_SOLE719();
+		CLEAR_POUSSOIR_POS_SORTIE_SOLE722();
+		SET_POUSSOIR_POS_ENTREE_SOLE719();
 		return;
 	}
 
@@ -263,12 +263,12 @@ void processusCentreTestElevateur(void)
 		return;
 	}
 
-	if (compteurElevateur == TEMPS_MAXIMUM && ELEVATEUR_HAUT != 0)
+	if (compteurElevateur >= TEMPS_MAXIMUM && ELEVATEUR_HAUT != 0)
 	{
 		compteurElevateur = 0; // reset prochain test
 		interfacePCF8574.requete = REQUETE_ACTIVE;
-		SET_ELEV_HAUT_SOLE716();
-		CLEAR_ELEV_BAS_SOLE713();
+		CLEAR_ELEV_HAUT_SOLE716();
+		SET_ELEV_BAS_SOLE713();
 		SET_RELAIS_MOTEUR_CONVOYEUR();
 		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 				processusCentreTestConvoyeur;
@@ -282,8 +282,8 @@ void processusCentreTestConvoyeur(void)
 {
 	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
 	{
-		if ((interfacePCF8574.entreesCarte1 & ~0x55) != 0			//0x55 = init, convoyeur pas de sortie pour etat
-				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0) 	//0x30 = init sauf boutons rouge/vert
+		if ((interfacePCF8574.entreesCarte1 & ~0x75) != 0			//0x75 = init, convoyeur pas de sortie; suppose que temps elevateur = haut trop grand pour
+				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0) 	//0x30 = init sauf boutons rouge/vert|  detecter avant prochaine phase
 		{
 			interfacePCF8574.information = INFORMATION_TRAITEE;
 			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
@@ -304,7 +304,8 @@ void processusCentreTestConvoyeur(void)
 	{
 		interfacePCF8574.information = INFORMATION_TRAITEE;
 		interfacePCF8574.requete = REQUETE_ACTIVE;
-		SET_POUSSOIR_POS_SORTIE_SOLE725();
+		CLEAR_RELAIS_MOTEUR_CONVOYEUR();
+		SET_EJECT_POS_SORTIE_SOLE725();
 		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 				processusCentreTestEjecteur;
 		return;
@@ -320,8 +321,8 @@ void processusCentreTestEjecteur(void)
 	compteurEjecteur++;
 
 	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
-	{
-		if ((interfacePCF8574.entreesCarte1 & ~0x59) != 0			//0x75 = init, sauf ejecteur = sortie
+	{		//CHANGER POUR VRAI TEST -> 0x59??
+		if ((interfacePCF8574.entreesCarte1 & ~0x5D) != 0			//0x59 = init, sauf ejecteur = sortie
 				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0) 	//0x30 = init sauf boutons rouge/vert
 		{
 			interfacePCF8574.information = INFORMATION_TRAITEE;
@@ -339,28 +340,102 @@ void processusCentreTestEjecteur(void)
 		return;
 	}
 
-	if (compteurEjecteur >= TEMPS_MAXIMUM && ELEVATEUR_HAUT != 0)
+	if (compteurEjecteur >= TEMPS_MAXIMUM && EJECT_POS_SORTIE != 0)
 	{
 		compteurEjecteur = 0; // reset prochain test
 		interfacePCF8574.information = INFORMATION_TRAITEE;
 		interfacePCF8574.requete = REQUETE_ACTIVE;
-		CLEAR_POUSSOIR_POS_SORTIE_SOLE725();
+		CLEAR_EJECT_POS_SORTIE_SOLE725();
+		SET_VACCUM_SOLE710();
 		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
-				processusCentreTestVentouse;
+				processusCentreTestVentouseVaccum;
 		return;
 	}
 
 	interfacePCF8574.information = INFORMATION_TRAITEE; //si changement mais aucune condition -> lecture encore
 }
 
-void processusCentreTestVentouse(void)
+void processusCentreTestVentouseVaccum(void)
 {
+	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
+	{
+		if ((interfacePCF8574.entreesCarte1 & ~0x55) != 0			//0x55 = init
+				|| (interfacePCF8574.entreesCarte2 & ~0x70) != 0)	//0x70 = init, sauf boutons rouge/vert et vaccum ventouse
+		{
+			interfacePCF8574.information = INFORMATION_TRAITEE;
+			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+					processusCentreModeErreur;
+			return;
+		}
+	}
 
+	if (interfacePCF8574.information == INFORMATION_DISPONIBLE && BOUTON_ROUGE == BOUTON_APPUYE)
+	{
+		interfacePCF8574.information = INFORMATION_TRAITEE;
+		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+				processusCentreModeArret;
+		return;
+	}
+
+	if (interfacePCF8574.information == INFORMATION_DISPONIBLE && BOUTON_VERT == BOUTON_APPUYE)
+	{
+		interfacePCF8574.information = INFORMATION_TRAITEE;
+		interfacePCF8574.requete = REQUETE_ACTIVE;
+		CLEAR_VACCUM_SOLE710();
+		SET_VENTOUSE_BAS_SOLE704();
+		CLEAR_VENTOUSE_HAUT_SOLE707();
+		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+				processusCentreTestVentouseHauteur;
+		return;
+	}
+
+	interfacePCF8574.information = INFORMATION_TRAITEE; //si changement mais aucune condition -> lecture encore
+}
+
+void processusCentreTestVentouseHauteur(void)
+{
+	uint16_t compteurVentouseHauteur = 0;
+
+	compteurVentouseHauteur++;
+
+	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
+	{	//CHANGER POUR VRAI TEST -> 0X56??
+		if ((interfacePCF8574.entreesCarte1 & ~0x57) != 0			//0x56 = init, sauf ventouse = bas
+				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0)	//0x70 = init, sauf boutons rouge/vert
+		{
+			interfacePCF8574.information = INFORMATION_TRAITEE;
+			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+					processusCentreModeErreur;
+			return;
+		}
+	}
+
+	if (interfacePCF8574.information == INFORMATION_DISPONIBLE && BOUTON_ROUGE == BOUTON_APPUYE)
+	{
+		interfacePCF8574.information = INFORMATION_TRAITEE;
+		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+				processusCentreModeArret;
+		return;
+	}
+
+	if (compteurVentouseHauteur >= TEMPS_MAXIMUM && VENTOUSE_BAS != 0)
+	{
+		compteurVentouseHauteur = 0; //reset prochain test
+		interfacePCF8574.information = INFORMATION_TRAITEE;
+		interfacePCF8574.requete = REQUETE_ACTIVE;
+		CLEAR_VENTOUSE_BAS_SOLE704();
+		SET_VENTOUSE_HAUT_SOLE707();
+		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+				processusCentreModeAttente;
+		return;
+	}
+
+	interfacePCF8574.information = INFORMATION_TRAITEE; //si changement mais aucune condition -> lecture encore
 }
 
 void processusCentreModeOperation(void)
 {
-	interfacePCF8574.mode = OPERATION;
+	modeCentreTri = OPERATION;
 }
 
 void processusCentreModeErreur(void)
@@ -371,7 +446,17 @@ void processusCentreModeErreur(void)
 void processusCentreDeTri_Init(void)
 {
 	//initialiser sorties
-	// toutes sorties = 0?
+	CLEAR_LUMIERE_VERTE();
+	CLEAR_VENTOUSE_BAS_SOLE704();
+	SET_VENTOUSE_HAUT_SOLE707();
+	CLEAR_VACCUM_SOLE710();
+	SET_ELEV_BAS_SOLE713();
+	CLEAR_ELEV_HAUT_SOLE716();
+	SET_POUSSOIR_POS_ENTREE_SOLE719();
+	CLEAR_POUSSOIR_POS_SORTIE_SOLE722();
+	CLEAR_EJECT_POS_SORTIE_SOLE725();
+	CLEAR_RELAIS_MOTEUR_CONVOYEUR();
+
 
 	serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 				processusCentreModeAttente;

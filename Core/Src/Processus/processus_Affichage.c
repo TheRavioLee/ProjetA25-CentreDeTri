@@ -10,6 +10,7 @@
 #include "ServiceBaseTemps.h"
 #include "processusSortiesNumeriques.h"
 #include "processusEntreesNumeriques.h"
+#include "processusCentreDeTri.h"
 #include "interface_ADC.h"
 #include "interface_BoutonBleu.h"
 #include "interface_Moteur.h"
@@ -163,7 +164,7 @@ void processusAffichage_Afficher(void)
 	vPutCharGLcd(entree_ADC[2], 7, 9, 5);
 	vPutCharGLcd(entree_ADC[3], 7, 10, 5);
 
-	switch (interfacePCF8574.mode)
+	switch (modeCentreTri)
 	{
 	case ATTENTE:
 		vPutCharGLcd('W', 7, 18, 5);

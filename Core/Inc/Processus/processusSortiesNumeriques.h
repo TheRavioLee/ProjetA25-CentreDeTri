@@ -32,14 +32,14 @@
 #define SET_ELEV_HAUT_SOLE716() SET_SORTIE(interfacePCF8574.sortiesCarte1, 5)
 #define CLEAR_ELEV_HAUT_SOLE716() CLEAR_SORTIE(interfacePCF8574.sortiesCarte1, 5)
 
-#define SET_EJECT_POS_ENTREE_SOLE719() SET_SORTIE(interfacePCF8574.sortiesCarte1, 6)
-#define CLEAR_EJECT_POS_ENTREE_SOLE719() CLEAR_SORTIE(interfacePCF8574.sortiesCarte1, 6)
+#define SET_POUSSOIR_POS_ENTREE_SOLE719() SET_SORTIE(interfacePCF8574.sortiesCarte1, 6)
+#define CLEAR_POUSSOIR_POS_ENTREE_SOLE719() CLEAR_SORTIE(interfacePCF8574.sortiesCarte1, 6)
 
-#define SET_EJECT_POS_SORTIE_SOLE722() SET_SORTIE(interfacePCF8574.sortiesCarte1, 7)
-#define CLEAR_EJECT_POS_SORTIE_SOLE722() CLEAR_SORTIE(interfacePCF8574.sortiesCarte1, 7)
+#define SET_POUSSOIR_POS_SORTIE_SOLE722() SET_SORTIE(interfacePCF8574.sortiesCarte1, 7)
+#define CLEAR_POUSSOIR_POS_SORTIE_SOLE722() CLEAR_SORTIE(interfacePCF8574.sortiesCarte1, 7)
 
-#define SET_POUSSOIR_POS_SORTIE_SOLE725() SET_SORTIE(interfacePCF8574.sortiesCarte2, 0)
-#define CLEAR_POUSSOIR_POS_SORTIE_SOLE725() CLEAR_SORTIE(interfacePCF8574.sortiesCarte2, 0)
+#define SET_EJECT_POS_SORTIE_SOLE725() SET_SORTIE(interfacePCF8574.sortiesCarte2, 0)
+#define CLEAR_EJECT_POS_SORTIE_SOLE725() CLEAR_SORTIE(interfacePCF8574.sortiesCarte2, 0)
 
 #define SET_RELAIS_MOTEUR_CONVOYEUR() SET_SORTIE(interfacePCF8574.sortiesCarte2, 1)
 #define CLEAR_RELAIS_MOTEUR_CONVOYEUR() CLEAR_SORTIE(interfacePCF8574.sortiesCarte2, 1)
@@ -52,10 +52,10 @@
 #define VACCUM_SOLE710 ((interfacePCF8574.sortiesCarte1 >> 3) & 0x01)
 #define ELEV_BAS_SOLE713 ((interfacePCF8574.sortiesCarte1 >> 4) & 0x01)
 #define ELEV_HAUT_SOLE716 ((interfacePCF8574.sortiesCarte1 >> 5) & 0x01)
-#define EJECT_POS_ENTREE_SOLE719 ((interfacePCF8574.sortiesCarte1 >> 6) & 0x01)
-#define EJECT_POS_SORTIE_SOLE722 ((interfacePCF8574.sortiesCarte1 >> 7) & 0x01)
+#define POUSSOIR_POS_ENTREE_SOLE719 ((interfacePCF8574.sortiesCarte1 >> 6) & 0x01)
+#define POUSSOIR_POS_SORTIE_SOLE722 ((interfacePCF8574.sortiesCarte1 >> 7) & 0x01)
 
-#define POUSSOIR_POS_SORTIE_SOLE725 ((interfacePCF8574.sortiesCarte2 >> 0) & 0x01)
+#define EJECT_POS_SORTIE_SOLE725 ((interfacePCF8574.sortiesCarte2 >> 0) & 0x01)
 #define RELAIS_MOTEUR_CONVOYEUR ((interfacePCF8574.sortiesCarte2 >> 1) & 0x01)
 #define SORTIE3_2 ((interfacePCF8574.sortiesCarte2 >> 2) & 0x01)
 #define SORTIE4_2 ((interfacePCF8574.sortiesCarte2 >> 3) & 0x01)
