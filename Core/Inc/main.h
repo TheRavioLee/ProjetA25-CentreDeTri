@@ -57,6 +57,11 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define TRIAC_CTRL_Pin GPIO_PIN_6
+#define TRIAC_CTRL_GPIO_Port GPIOE
+#define TRIAC_EXTI_Pin GPIO_PIN_13
+#define TRIAC_EXTI_GPIO_Port GPIOC
+#define TRIAC_EXTI_EXTI_IRQn EXTI15_10_IRQn
 #define PC14_OSC32_IN_Pin GPIO_PIN_14
 #define PC14_OSC32_IN_GPIO_Port GPIOC
 #define PC15_OSC32_OUT_Pin GPIO_PIN_15
@@ -67,8 +72,14 @@ void Error_Handler(void);
 #define PH1_OSC_OUT_GPIO_Port GPIOH
 #define OTG_FS_PowerSwitchOn_Pin GPIO_PIN_0
 #define OTG_FS_PowerSwitchOn_GPIO_Port GPIOC
-#define B1_Pin GPIO_PIN_0
-#define B1_GPIO_Port GPIOA
+#define BTN_BLEU_Pin GPIO_PIN_0
+#define BTN_BLEU_GPIO_Port GPIOA
+#define PHASE_4_Pin GPIO_PIN_5
+#define PHASE_4_GPIO_Port GPIOA
+#define PHASE_2_Pin GPIO_PIN_6
+#define PHASE_2_GPIO_Port GPIOA
+#define PHASE_3_Pin GPIO_PIN_7
+#define PHASE_3_GPIO_Port GPIOA
 #define RD_Pin GPIO_PIN_0
 #define RD_GPIO_Port GPIOB
 #define A4_Pin GPIO_PIN_1
@@ -133,16 +144,24 @@ void Error_Handler(void);
 #define SCL_GPIO_Port GPIOB
 #define SDA_Pin GPIO_PIN_9
 #define SDA_GPIO_Port GPIOB
+#define PHASE_1_Pin GPIO_PIN_0
+#define PHASE_1_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
+#define FREQ_BASETEMPS_HZ 1000
+#define FREQ_LECTURE_BTN_HZ 100
 
 //Definitions Base de temps
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 5
-#define ENTREES_NUM_PHASE 0
-#define ENTREE_ANALOGUE_PHASE 1
-#define SORTIES_NUM_PHASE 2
-#define CENTRE_DE_TRI_PHASE 3
-#define PROCESSUS_AFFICHAGE_PHASE 4
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 7 //9
+#define PROCESSUS_CENTRE_TRI_PHASE 0
+#define ENTREES_NUM_PHASE 1
+#define ENTREE_ANALOGUE_PHASE 2
+#define SORTIES_NUM_PHASE 3
+#define INTERFACE_BTN_BLEU_PHASE 4
+#define MOTEUR_PHASE 5
+#define PROCESSUS_AFFICHAGE_PHASE 6
+//#define RECEPTION_CAN_PHASE 7
+//#define TRANSMISSION_CAN_PHASE 8
 
 
 #define INFORMATION_DISPONIBLE 1
@@ -153,6 +172,15 @@ void Error_Handler(void);
 #define READ_FAIL 0
 #define WRITE_GOOD 1
 #define WRITE_FAIL 0
+
+#define BOUTON_RELACHE 0
+#define BOUTON_APPUYE 1
+#define BOUTON_INCONNU 2
+
+#define ATTENTE 1
+#define ARRET 2
+#define OPERATION 3
+#define TEST 4
 
 //Fonctions publiques
 void doNothing(void);

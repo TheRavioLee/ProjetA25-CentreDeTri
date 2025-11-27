@@ -60,6 +60,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 ProjetA25_CentreDeTri.list \
 
+OBJCOPY_HEX += \
+ProjetA25_CentreDeTri.hex \
+
 
 # All Target
 all: main-build
@@ -83,12 +86,17 @@ ProjetA25_CentreDeTri.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL
 	@echo 'Finished building: $@'
 	@echo ' '
 
+ProjetA25_CentreDeTri.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "ProjetA25_CentreDeTri.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) ProjetA25_CentreDeTri.elf ProjetA25_CentreDeTri.list ProjetA25_CentreDeTri.map default.size.stdout
+	-$(RM) ProjetA25_CentreDeTri.elf ProjetA25_CentreDeTri.hex ProjetA25_CentreDeTri.list ProjetA25_CentreDeTri.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

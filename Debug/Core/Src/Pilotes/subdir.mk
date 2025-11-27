@@ -5,19 +5,37 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/Pilotes/pilote_BoutonBleu.c \
 ../Core/Src/Pilotes/pilote_CAN.c \
 ../Core/Src/Pilotes/pilote_I2C.c \
-../Core/Src/Pilotes/pilote_Timer14.c 
+../Core/Src/Pilotes/pilote_MoteurPH1.c \
+../Core/Src/Pilotes/pilote_MoteurPH2.c \
+../Core/Src/Pilotes/pilote_MoteurPH3.c \
+../Core/Src/Pilotes/pilote_MoteurPH4.c \
+../Core/Src/Pilotes/pilote_Timers.c \
+../Core/Src/Pilotes/pilote_Triac.c 
 
 OBJS += \
+./Core/Src/Pilotes/pilote_BoutonBleu.o \
 ./Core/Src/Pilotes/pilote_CAN.o \
 ./Core/Src/Pilotes/pilote_I2C.o \
-./Core/Src/Pilotes/pilote_Timer14.o 
+./Core/Src/Pilotes/pilote_MoteurPH1.o \
+./Core/Src/Pilotes/pilote_MoteurPH2.o \
+./Core/Src/Pilotes/pilote_MoteurPH3.o \
+./Core/Src/Pilotes/pilote_MoteurPH4.o \
+./Core/Src/Pilotes/pilote_Timers.o \
+./Core/Src/Pilotes/pilote_Triac.o 
 
 C_DEPS += \
+./Core/Src/Pilotes/pilote_BoutonBleu.d \
 ./Core/Src/Pilotes/pilote_CAN.d \
 ./Core/Src/Pilotes/pilote_I2C.d \
-./Core/Src/Pilotes/pilote_Timer14.d 
+./Core/Src/Pilotes/pilote_MoteurPH1.d \
+./Core/Src/Pilotes/pilote_MoteurPH2.d \
+./Core/Src/Pilotes/pilote_MoteurPH3.d \
+./Core/Src/Pilotes/pilote_MoteurPH4.d \
+./Core/Src/Pilotes/pilote_Timers.d \
+./Core/Src/Pilotes/pilote_Triac.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -27,7 +45,7 @@ Core/Src/Pilotes/%.o Core/Src/Pilotes/%.su Core/Src/Pilotes/%.cyclo: ../Core/Src
 clean: clean-Core-2f-Src-2f-Pilotes
 
 clean-Core-2f-Src-2f-Pilotes:
-	-$(RM) ./Core/Src/Pilotes/pilote_CAN.cyclo ./Core/Src/Pilotes/pilote_CAN.d ./Core/Src/Pilotes/pilote_CAN.o ./Core/Src/Pilotes/pilote_CAN.su ./Core/Src/Pilotes/pilote_I2C.cyclo ./Core/Src/Pilotes/pilote_I2C.d ./Core/Src/Pilotes/pilote_I2C.o ./Core/Src/Pilotes/pilote_I2C.su ./Core/Src/Pilotes/pilote_Timer14.cyclo ./Core/Src/Pilotes/pilote_Timer14.d ./Core/Src/Pilotes/pilote_Timer14.o ./Core/Src/Pilotes/pilote_Timer14.su
+	-$(RM) ./Core/Src/Pilotes/pilote_BoutonBleu.cyclo ./Core/Src/Pilotes/pilote_BoutonBleu.d ./Core/Src/Pilotes/pilote_BoutonBleu.o ./Core/Src/Pilotes/pilote_BoutonBleu.su ./Core/Src/Pilotes/pilote_CAN.cyclo ./Core/Src/Pilotes/pilote_CAN.d ./Core/Src/Pilotes/pilote_CAN.o ./Core/Src/Pilotes/pilote_CAN.su ./Core/Src/Pilotes/pilote_I2C.cyclo ./Core/Src/Pilotes/pilote_I2C.d ./Core/Src/Pilotes/pilote_I2C.o ./Core/Src/Pilotes/pilote_I2C.su ./Core/Src/Pilotes/pilote_MoteurPH1.cyclo ./Core/Src/Pilotes/pilote_MoteurPH1.d ./Core/Src/Pilotes/pilote_MoteurPH1.o ./Core/Src/Pilotes/pilote_MoteurPH1.su ./Core/Src/Pilotes/pilote_MoteurPH2.cyclo ./Core/Src/Pilotes/pilote_MoteurPH2.d ./Core/Src/Pilotes/pilote_MoteurPH2.o ./Core/Src/Pilotes/pilote_MoteurPH2.su ./Core/Src/Pilotes/pilote_MoteurPH3.cyclo ./Core/Src/Pilotes/pilote_MoteurPH3.d ./Core/Src/Pilotes/pilote_MoteurPH3.o ./Core/Src/Pilotes/pilote_MoteurPH3.su ./Core/Src/Pilotes/pilote_MoteurPH4.cyclo ./Core/Src/Pilotes/pilote_MoteurPH4.d ./Core/Src/Pilotes/pilote_MoteurPH4.o ./Core/Src/Pilotes/pilote_MoteurPH4.su ./Core/Src/Pilotes/pilote_Timers.cyclo ./Core/Src/Pilotes/pilote_Timers.d ./Core/Src/Pilotes/pilote_Timers.o ./Core/Src/Pilotes/pilote_Timers.su ./Core/Src/Pilotes/pilote_Triac.cyclo ./Core/Src/Pilotes/pilote_Triac.d ./Core/Src/Pilotes/pilote_Triac.o ./Core/Src/Pilotes/pilote_Triac.su
 
 .PHONY: clean-Core-2f-Src-2f-Pilotes
 

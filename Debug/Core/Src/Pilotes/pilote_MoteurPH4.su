@@ -1,0 +1,2 @@
+../Core/Src/Pilotes/pilote_MoteurPH4.c:10:6:moteurPH4_set	8	static
+../Core/Src/Pilotes/pilote_MoteurPH4.c:15:6:moteurPH4_reset	8	static

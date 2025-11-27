@@ -1,3 +1,3 @@
 ../Core/Src/Pilotes/pilote_I2C.c:14:9:lectureI2C	32	static
-../Core/Src/Pilotes/pilote_I2C.c:29:9:lectureI2C_10bits	32	static
-../Core/Src/Pilotes/pilote_I2C.c:49:9:ecritureI2C	24	static
+../Core/Src/Pilotes/pilote_I2C.c:25:10:lectureI2C_10bits	32	static
+../Core/Src/Pilotes/pilote_I2C.c:40:6:ecritureI2C	24	static

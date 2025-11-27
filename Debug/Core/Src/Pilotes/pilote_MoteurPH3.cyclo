@@ -1,0 +1,2 @@
+../Core/Src/Pilotes/pilote_MoteurPH3.c:10:6:moteurPH3_set	1
+../Core/Src/Pilotes/pilote_MoteurPH3.c:15:6:moteurPH3_reset	1

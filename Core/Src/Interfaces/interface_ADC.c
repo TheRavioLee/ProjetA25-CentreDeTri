@@ -15,21 +15,14 @@ void lectureADC(void);
 
 void lectureADC(void)
 {
-	if(interfaceADC.information == INFORMATION_DISPONIBLE)
-	{
-		return;
-	}
-
-	lectureI2C_10bits(ADDR_ANALOGUE1, &interfaceADC.valeurADC);
-	interfaceADC.information = INFORMATION_DISPONIBLE;
+	interfaceADC.valeurADC = lectureI2C_10bits(ADDR_ANALOGUE1);
 }
 
 //variables publiques
 INTERFACE_ADC interfaceADC;
 
 //fonctions publiques
-void interfaceADC_init(void)
+void interfaceADC_Init(void)
 {
-	interfaceADC.information = INFORMATION_DISPONIBLE;
 	serviceBaseDeTemps_execute[ENTREE_ANALOGUE_PHASE] = lectureADC;
 }
