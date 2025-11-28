@@ -10,8 +10,8 @@
 
 
 //define macros pour ecriture individuelle sorties
-#define SET_SORTIE(var, bit)     ((var) |=  (1 << (bit)))
-#define CLEAR_SORTIE(var, bit)   ((var) &= ~(1 << (bit)))
+#define CLEAR_SORTIE(var, bit)     ((var) |=  (1 << (bit)))
+#define SET_SORTIE(var, bit)   ((var) &= ~(1 << (bit)))
 #define TOGGLE_BIT(var, bit)  ((var) ^=  (1 << (bit)))
 
 #define SET_LUMIERE_VERTE()	SET_SORTIE(interfacePCF8574.sortiesCarte1, 0)
