@@ -26,10 +26,7 @@ uint8_t reverseByte(uint8_t x)
 
 void lectureEntrees(void)
 {
-	uint8_t tempCarte2;
-
 	interfacePCF8574.entreesCarte1 = lectureI2C(ADDR_ENTREE_CARTE1);
-//	tempCarte2 = ~lectureI2C(ADDR_ENTREE_CARTE2);
 	interfacePCF8574.entreesCarte2 = reverseByte(~lectureI2C(ADDR_ENTREE_CARTE2));
 	interfacePCF8574.entreesCarte3 = ~lectureI2C(ADDR_ENTREE_CARTE3);
 }

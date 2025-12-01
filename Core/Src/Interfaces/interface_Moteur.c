@@ -75,5 +75,5 @@ void interfaceMoteur_Init(void)
 	interfaceMoteur.directionMoteur = MONTER;
 	interfaceMoteur.vitesseMoteur = VITESSE_LENT;
 	compteurMoteur = 0;
-	serviceBaseDeTemps_execute[MOTEUR_PHASE] = simuleMoteur;
+//	serviceBaseDeTemps_execute[MOTEUR_PHASE] = simuleMoteur;
 }
