@@ -1,4 +1,4 @@
 ../Core/Src/Interfaces/interface_PCF8574.c:15:9:reverseByte	2
 ../Core/Src/Interfaces/interface_PCF8574.c:27:6:lectureEntrees	1
-../Core/Src/Interfaces/interface_PCF8574.c:37:6:ecritureSorties	1
-../Core/Src/Interfaces/interface_PCF8574.c:47:6:interfacePCF8574_init	1
+../Core/Src/Interfaces/interface_PCF8574.c:34:6:ecritureSorties	1
+../Core/Src/Interfaces/interface_PCF8574.c:44:6:interfacePCF8574_init	1

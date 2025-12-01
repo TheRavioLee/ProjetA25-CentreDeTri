@@ -1,4 +1,4 @@
-../Core/Src/Processus/processusCentreDeTri.c:40:6:processusCentreModeAttente	10
+../Core/Src/Processus/processusCentreDeTri.c:40:6:processusCentreModeAttente	7
 ../Core/Src/Processus/processusCentreDeTri.c:84:6:processusCentreModeArret	10
 ../Core/Src/Processus/processusCentreDeTri.c:148:6:processusCentreModeTest	1
 ../Core/Src/Processus/processusCentreDeTri.c:155:6:processusCentreTestEntrees	8
