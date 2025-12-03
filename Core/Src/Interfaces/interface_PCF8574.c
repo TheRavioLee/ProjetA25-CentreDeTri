@@ -43,13 +43,6 @@ INTERFACE_PCF8574 interfacePCF8574;
 //fonctions publiques
 void interfacePCF8574_init(void)
 {
-	interfacePCF8574.entreesCarte1 = 0x00;
-	interfacePCF8574.entreesCarte2 = 0x00;
-	interfacePCF8574.entreesCarte3 = 0x00;
-
-	interfacePCF8574.sortiesCarte1 = 0x00;
-	interfacePCF8574.sortiesCarte2 = 0x00;
-
 	interfacePCF8574.information = INFORMATION_TRAITEE;
 	interfacePCF8574.requete = REQUETE_ACTIVE;
 //	serviceBaseDeTemps_execute[ENTREES_NUM_PHASE] = lectureEntrees;

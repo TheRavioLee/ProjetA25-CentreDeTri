@@ -20,8 +20,11 @@
 #define TEMPS_MAXIMUM 250 // 250 * 9ms = ~2.5s
 
 uint8_t modeCentreTri;
+uint8_t requetePosition;
 
 //Fonctions privees
+uint8_t rising_edge_pulse(uint8_t current);
+
 void processusCentreModeAttente(void);
 void processusCentreModeTest(void);
 
@@ -32,6 +35,7 @@ void processusCentreTestConvoyeur(void);
 void processusCentreTestEjecteur(void);
 void processusCentreTestVentouseVaccum(void);
 void processusCentreTestVentouseHauteur(void);
+void processusCentreTestDeplaceVentouse(void);
 
 void processusCentreModeOperation(void);
 void processusCentreModeArret(void);
@@ -39,6 +43,7 @@ void processusCentreModeErreur(void);
 
 void processusCentreModeAttente(void)
 {
+	static uint8_t compteurPont = 0;
 	modeCentreTri = ATTENTE;
 	//faire lecture des entrees pour assurer aucune erreur
 	// si erreur -> mode erreur bloquant
@@ -53,6 +58,27 @@ void processusCentreModeAttente(void)
 //			return;
 //		}
 //	}
+
+	if (requetePosition == REQUETE_ACTIVE)
+	{
+	    compteurPont++;
+
+	    if (compteurPont == 1)
+	    {
+	    	interfacePCF8574.requete = REQUETE_ACTIVE;
+	        SET_START_POS_PROCESS();   // start of pulse
+	    }
+
+	    // ensure at least N cycles before checking DEF_MOTION_COMPLETE
+	    if (compteurPont >= 100 )//&& DEF_MOTION_COMPLETE != 0)
+	    {
+	    	interfacePCF8574.requete = REQUETE_ACTIVE;
+	        CLEAR_START_POS_PROCESS(); // end pulse
+	        requetePosition = REQUETE_TRAITEE;
+	        compteurPont = 0;
+	    }
+	}
+
 
 	if (interfacePCF8574.information == INFORMATION_DISPONIBLE && BOUTON_ROUGE == BOUTON_APPUYE)
 	{
@@ -409,7 +435,7 @@ void processusCentreTestVentouseVaccum(void)
 
 void processusCentreTestVentouseHauteur(void)
 {
-	uint16_t compteurVentouseHauteur = 0;
+	static uint16_t compteurVentouseHauteur = 0;
 
 	compteurVentouseHauteur++;
 
@@ -446,7 +472,145 @@ void processusCentreTestVentouseHauteur(void)
 		CLEAR_VENTOUSE_BAS_SOLE704();
 		SET_VENTOUSE_HAUT_SOLE707();
 		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
-				processusCentreModeAttente;
+				processusCentreTestDeplaceVentouse;
+		return;
+	}
+
+	interfacePCF8574.information = INFORMATION_TRAITEE; //si changement mais aucune condition -> lecture encore
+}
+
+void processusCentreTestDeplaceVentouse(void)
+{
+	static uint8_t compteurBoutonVert = 0;
+	static uint8_t compteurDeplacement = 0;
+	static uint8_t sender = 0;
+
+//	if (interfacePCF8574.information == INFORMATION_DISPONIBLE && pulseStartProcess == 1 && DEF_MOTION_COMPLETE != 0)
+//	{
+//		pulseStartProcess = 0;
+//		interfacePCF8574.requete = REQUETE_ACTIVE;
+//		CLEAR_START_POS_PROCESS();
+//
+//		switch(sender)
+//		{
+//		case 1:
+//			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+//					processusCentreModeArret;
+//			interfacePCF8574.information = INFORMATION_TRAITEE;
+//			return;
+//			break;
+//		case 2:
+//			if (compteurBoutonVert == 3)
+//			{
+//				compteurBoutonVert = 0;
+//				serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+//						processusCentreModeAttente;
+//			}
+//			interfacePCF8574.information = INFORMATION_TRAITEE;
+//			return;
+//			break;
+//		}
+//	}
+
+	if (requetePosition == REQUETE_ACTIVE)
+	{
+		compteurDeplacement++;
+
+		if (compteurDeplacement == 1)
+		{
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			SET_START_POS_PROCESS();   // start of pulse
+			return;
+		}
+
+		// ensure at least N cycles before checking DEF_MOTION_COMPLETE
+		if (compteurDeplacement >= 100 /*&& DEF_MOTION_COMPLETE != 0*/)
+		{
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			CLEAR_START_POS_PROCESS(); // end pulse
+			requetePosition = REQUETE_TRAITEE;
+			compteurDeplacement = 0;
+			switch(sender)
+			{
+			case 1:
+				serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+						processusCentreModeArret;
+				interfacePCF8574.information = INFORMATION_TRAITEE;
+				return;
+				break;
+			case 2:
+				if (compteurBoutonVert == 3)
+				{
+					compteurBoutonVert = 0;
+					serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+							processusCentreModeAttente;
+				}
+				interfacePCF8574.information = INFORMATION_TRAITEE;
+				return;
+				break;
+			}
+		}
+		interfacePCF8574.information = INFORMATION_TRAITEE;
+		return;
+	}
+
+	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
+	{	//CHANGER POUR VRAI TEST -> 0X56??
+		if ((interfacePCF8574.entreesCarte1 & ~0x55) != 0			//0x56 = init, sauf ventouse = bas
+				|| (interfacePCF8574.entreesCarte2 & ~0x30) != 0	//0x30 = init, sauf boutons rouge/vert
+				|| (interfacePCF8574.entreesCarte3 & 0x02) == 0)	//0x02 = init, bit 2 = 0 = error
+		{
+			compteurBoutonVert = 0; //reset prochain test
+			interfacePCF8574.information = INFORMATION_TRAITEE;
+			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+					processusCentreModeErreur;
+			return;
+		}
+	}
+
+	if (interfacePCF8574.information == INFORMATION_DISPONIBLE && BOUTON_ROUGE == BOUTON_APPUYE)
+	{
+		compteurBoutonVert = 0; //reset prochain test
+		interfacePCF8574.information = INFORMATION_TRAITEE;
+		interfacePCF8574.requete = REQUETE_ACTIVE;
+		SET_SELECT_POS_0();
+		CLEAR_SELECT_POS_1();
+		CLEAR_SELECT_POS_2();
+		SET_START_POS_PROCESS();
+		sender = 1;	//BOUTON_ROUGE
+		return;
+	}
+
+	if (interfacePCF8574.information == INFORMATION_DISPONIBLE && BOUTON_VERT == BOUTON_APPUYE
+			&& DEF_MOTION_COMPLETE != 0)
+	{
+		compteurBoutonVert++;
+		interfacePCF8574.information = INFORMATION_TRAITEE;
+		interfacePCF8574.requete = REQUETE_ACTIVE;
+		requetePosition = REQUETE_ACTIVE;
+
+		switch(compteurBoutonVert)
+		{
+		case 1:
+			CLEAR_SELECT_POS_0();
+			SET_SELECT_POS_1();
+			CLEAR_SELECT_POS_2();
+			CLEAR_START_POS_PROCESS();
+			break;
+		case 2:
+			CLEAR_SELECT_POS_0();
+			CLEAR_SELECT_POS_1();
+			SET_SELECT_POS_2();
+			CLEAR_START_POS_PROCESS();
+			break;
+		case 3:
+			SET_SELECT_POS_0();
+			CLEAR_SELECT_POS_1();
+			CLEAR_SELECT_POS_2();
+			CLEAR_START_POS_PROCESS();
+			break;
+		}
+		sender = 2; //BOUTON_VERT
 		return;
 	}
 
@@ -463,6 +627,21 @@ void processusCentreModeErreur(void)
 	piloteTimer14_arreteLesInterruptions();
 }
 
+uint8_t rising_edge_pulse(uint8_t current)
+{
+    static uint8_t previous = 1;
+
+    if (previous == 0 && current == 1)
+    {
+        previous = current;
+        return 1;   // rising edge detected
+    }
+
+    previous = current;
+    return 0;       // no rising edge
+}
+
+
 void processusCentreDeTri_Init(void)
 {
 	//initialiser sorties
@@ -476,6 +655,13 @@ void processusCentreDeTri_Init(void)
 	SET_EJECT_POS_SORTIE_SOLE722();
 	CLEAR_POUSSOIR_POS_SORTIE_SOLE725();
 	CLEAR_RELAIS_MOTEUR_CONVOYEUR();
+
+	SET_CONTROLLER_RELEASE();
+	SET_SELECT_POS_0();
+	CLEAR_SELECT_POS_1();
+	CLEAR_SELECT_POS_2();
+	CLEAR_START_POS_PROCESS();
+	requetePosition = REQUETE_ACTIVE;
 
 
 	serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =

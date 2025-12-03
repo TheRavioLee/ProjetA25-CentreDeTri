@@ -28,8 +28,8 @@
 #define INDIC_PRESS_VENTOUSE ((interfacePCF8574.entreesCarte2 >> 6) & 0x01)	//init = 0?
 #define ENTREE8_2 ((interfacePCF8574.entreesCarte2 >> 7) & 0x01)			//init = 0;
 
-#define ENTREE1_3 ((interfacePCF8574.entreesCarte3 >> 0) & 0x01)
-#define ENTREE2_3 ((interfacePCF8574.entreesCarte3 >> 1) & 0x01)
+#define DEF_MOTION_COMPLETE ((interfacePCF8574.entreesCarte3 >> 0) & 0x01)
+#define DEF_ERROR ((interfacePCF8574.entreesCarte3 >> 1) & 0x01)
 #define ENTREE3_3 ((interfacePCF8574.entreesCarte3 >> 2) & 0x01)
 #define ENTREE4_3 ((interfacePCF8574.entreesCarte3 >> 3) & 0x01)
 #define ENTREE5_3 ((interfacePCF8574.entreesCarte3 >> 4) & 0x01)
