@@ -1,4 +1,4 @@
-../Core/Src/Processus/processus_Affichage.c:37:6:uint16ToHex	48	static
-../Core/Src/Processus/processus_Affichage.c:46:6:byteToBinary	24	static
-../Core/Src/Processus/processus_Affichage.c:55:6:processusAffichage_Afficher	56	static
-../Core/Src/Processus/processus_Affichage.c:187:6:processusAffichageInit	8	static
+../Core/Src/Processus/processus_Affichage.c:38:6:uint16ToHex	48	static
+../Core/Src/Processus/processus_Affichage.c:47:6:byteToBinary	24	static
+../Core/Src/Processus/processus_Affichage.c:56:6:processusAffichage_Afficher	56	static
+../Core/Src/Processus/processus_Affichage.c:203:6:processusAffichageInit	8	static

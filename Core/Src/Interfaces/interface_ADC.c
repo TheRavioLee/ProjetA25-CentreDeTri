@@ -10,9 +10,6 @@
 #include "pilote_I2C.h"
 #include "interface_ADC.h"
 
-//Declaration fonctions privees
-void lectureADC(void);
-
 void lectureADC(void)
 {
 	interfaceADC.valeurADC = lectureI2C_10bits(ADDR_ANALOGUE1);
@@ -24,5 +21,5 @@ INTERFACE_ADC interfaceADC;
 //fonctions publiques
 void interfaceADC_Init(void)
 {
-	serviceBaseDeTemps_execute[ENTREE_ANALOGUE_PHASE] = lectureADC;
+	interfaceADC.information = INFORMATION_TRAITEE;
 }

@@ -10,7 +10,14 @@
 
 void processusCentreDeTri_Init(void);
 
-extern uint8_t modeCentreTri;
+typedef struct {
+	uint8_t mode;
+	uint8_t requete;
+	uint8_t information;
+	uint8_t couleurBloc;
 
+}CENTRE_DE_TRI;
+
+extern CENTRE_DE_TRI centreDeTri;
 
 #endif /* INC_PROCESSUS_PROCESSUSCENTREDETRI_H_ */

@@ -1,0 +1,2 @@
+../Core/Src/Processus/processusEntreeAnalogique.c:14:6:processusEntreeAnalogique_Lire	3
+../Core/Src/Processus/processusEntreeAnalogique.c:29:6:processusEntreeAnalogique_Init	1

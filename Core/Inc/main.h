@@ -182,6 +182,10 @@ void Error_Handler(void);
 #define OPERATION 3
 #define TEST 4
 
+#define BLOC_NOIR 1
+#define BLOC_ORANGE 2
+#define BLOC_METAL 3
+
 //Fonctions publiques
 void doNothing(void);
 

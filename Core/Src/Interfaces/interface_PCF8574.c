@@ -45,6 +45,4 @@ void interfacePCF8574_init(void)
 {
 	interfacePCF8574.information = INFORMATION_TRAITEE;
 	interfacePCF8574.requete = REQUETE_ACTIVE;
-//	serviceBaseDeTemps_execute[ENTREES_NUM_PHASE] = lectureEntrees;
-//	serviceBaseDeTemps_execute[SORTIES_NUM_PHASE] = ecritureSorties;
 }
