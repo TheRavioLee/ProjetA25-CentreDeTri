@@ -152,7 +152,7 @@ void Error_Handler(void);
 #define FREQ_LECTURE_BTN_HZ 100
 
 //Definitions Base de temps
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 7 //9
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 7 //10
 #define PROCESSUS_CENTRE_TRI_PHASE 0
 #define ENTREES_NUM_PHASE 1
 #define ENTREE_ANALOGUE_PHASE 2
@@ -162,6 +162,7 @@ void Error_Handler(void);
 #define PROCESSUS_AFFICHAGE_PHASE 6
 //#define RECEPTION_CAN_PHASE 7
 //#define TRANSMISSION_CAN_PHASE 8
+//define TRIAC_PHASE 9
 
 
 #define INFORMATION_DISPONIBLE 1
@@ -181,6 +182,10 @@ void Error_Handler(void);
 #define ARRET 2
 #define OPERATION 3
 #define TEST 4
+
+#define BLOC_NOIR 1
+#define BLOC_ORANGE 2
+#define BLOC_METAL 3
 
 //Fonctions publiques
 void doNothing(void);

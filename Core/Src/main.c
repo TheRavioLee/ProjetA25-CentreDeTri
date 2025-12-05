@@ -101,6 +101,7 @@ void Main_Init(void)
 	interfacePCF8574_init();
 	interfaceMoteur_Init();
 	interfaceADC_Init();
+	processusEntreeAnalogique_Init();
 	interface_BoutonBleuInit();
 	processusEntreesNum_Init();
 	processusSortiesNum_Init();

@@ -18,6 +18,8 @@ typedef struct {
 
 extern INTERFACE_ADC interfaceADC;
 
+
+void lectureADC(void);
 void interfaceADC_Init(void);
 
 #endif /* INC_INTERFACES_INTERFACE_ADC_H_ */

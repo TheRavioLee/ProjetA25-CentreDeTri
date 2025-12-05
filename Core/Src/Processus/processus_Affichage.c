@@ -14,6 +14,7 @@
 #include "interface_ADC.h"
 #include "interface_BoutonBleu.h"
 #include "interface_Moteur.h"
+#include "processusCentreDeTri.h"
 
 uint8_t base_affichage[8][23] = {
 		{"OUT: 1,2 | IN 3,4,5  "},
@@ -22,7 +23,7 @@ uint8_t base_affichage[8][23] = {
 		{"3    XXXX   XXXX     "},
 		{"4    XXXX   XXXX     "},
 		{"5    XXXX   XXXX     "},
-		{"BTN BLEU:            "},
+		{"BTN BLEU:    BLOC:X  "},
 		{"ADC: 0x      MODE:X  "}
 };
 
@@ -164,7 +165,7 @@ void processusAffichage_Afficher(void)
 	vPutCharGLcd(entree_ADC[2], 7, 9, 5);
 	vPutCharGLcd(entree_ADC[3], 7, 10, 5);
 
-	switch (modeCentreTri)
+	switch (centreDeTri.mode)
 	{
 	case ATTENTE:
 		vPutCharGLcd('W', 7, 18, 5);
@@ -177,6 +178,21 @@ void processusAffichage_Afficher(void)
 		break;
 	case TEST:
 		vPutCharGLcd('T', 7, 18, 5);
+		break;
+	}
+	switch (centreDeTri.couleurBloc)
+	{
+	case BLOC_NOIR:
+		vPutCharGLcd('N', 6, 18, 5);
+		break;
+	case BLOC_ORANGE:
+		vPutCharGLcd('O', 6, 18, 5);
+		break;
+	case BLOC_METAL:
+		vPutCharGLcd('M', 6, 18, 5);
+		break;
+	default:
+		vPutCharGLcd('A', 6, 18, 5);
 		break;
 	}
 }
