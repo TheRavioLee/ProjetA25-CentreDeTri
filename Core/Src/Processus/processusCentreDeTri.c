@@ -44,7 +44,10 @@ void processusCentreModeOperation(void);
 void processusCentreOperationDetectionBloc(void);
 void processusCentreOperationElevateur(void);
 void processusCentreOperationConvoyeur(void);
-void processusCentreOperationPont(void);
+void processusCentreOperationVentouse(void);
+void processusCentreOperationDeplacerBloc(void);
+void processusCentreOperationLacherBloc(void);
+void processusCentreOperationRetour(void);
 
 void processusCentreModeArret(void);
 void processusCentreModeErreur(void);
@@ -701,14 +704,10 @@ void processusCentreOperationDetectionBloc(void)
 			//si pas de bloc?
 			break;
 		}
-		interfacePCF8574.information = INFORMATION_TRAITEE;
-		interfaceADC.information = INFORMATION_TRAITEE;
 	}
 
 	if (centreDeTri.couleurBloc != 0)
 	{
-		interfacePCF8574.information = INFORMATION_TRAITEE;
-		interfaceADC.information = INFORMATION_TRAITEE;
 		interfacePCF8574.requete = REQUETE_ACTIVE;
 		CLEAR_ELEV_BAS_SOLE713();
 		SET_ELEV_HAUT_SOLE716();
@@ -742,7 +741,7 @@ void processusCentreOperationElevateur(void)
 		SET_ELEV_HAUT_SOLE716();
 		CLEAR_ELEV_BAS_SOLE713();
 	}
-	else if (ELEVATEUR_BAS != 1 && ELEVATEUR_HAUT == 1 && interfaceADC.valeurADC >= 0x350)
+	else if (ELEVATEUR_BAS != 1 && ELEVATEUR_HAUT == 1 && interfaceADC.valeurADC >= 0x360)
 	{
 		interfacePCF8574.requete = REQUETE_ACTIVE;
 		SET_RELAIS_MOTEUR_CONVOYEUR();
@@ -787,57 +786,188 @@ void processusCentreOperationConvoyeur(void)
 		SET_ELEV_BAS_SOLE713();
 
 		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
-				processusCentreOperationPont;
+				processusCentreOperationVentouse;
 	}
 
 	interfacePCF8574.information = INFORMATION_TRAITEE;	//si changement mais aucune condition -> lecture encore
 	interfaceADC.information = INFORMATION_TRAITEE;
 }
 
-void processusCentreOperationPont(void)
+void processusCentreOperationVentouse(void)
 {
-	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
+	static uint8_t compteurPont = 0;
+
+//	if (interfacePCF8574.information == INFORMATION_DISPONIBLE)
+//	{
+//		if ((interfacePCF8574.entreesCarte1 & ~0x57) != 0			//0x55= init
+//				|| (interfacePCF8574.entreesCarte2 & ~0x38) != 0	//0x30 = init, sauf boutons rouge/vert
+//				|| (interfacePCF8574.entreesCarte3 & 0x02) == 0) 	//0x02 = init, bit 2 = 0 = error
+//		{
+//			interfacePCF8574.information = INFORMATION_TRAITEE;
+//			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+//					processusCentreModeErreur;
+//			return;
+//		}
+//	}
+
+	compteurPont++;
+
+	if (compteurPont >= TEMPS_MAXIMUM)
 	{
-		if ((interfacePCF8574.entreesCarte1 & ~0x57) != 0			//0x55= init
-				|| (interfacePCF8574.entreesCarte2 & ~0x38) != 0	//0x30 = init, sauf boutons rouge/vert
-				|| (interfacePCF8574.entreesCarte3 & 0x02) == 0) 	//0x02 = init, bit 2 = 0 = error
+		compteurPont = 0;
+
+		if (DETECT_OPT_CHUTE == 1 && VENTOUSE_HAUT == 1 && VACCUM_SOLE710 == 1)
 		{
-			interfacePCF8574.information = INFORMATION_TRAITEE;
-			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
-					processusCentreModeErreur;
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			SET_VENTOUSE_BAS_SOLE704();
+			CLEAR_VENTOUSE_HAUT_SOLE707();
+			interfacePCF8574.information = INFORMATION_TRAITEE;	//si changement mais aucune condition -> lecture encore
+			interfaceADC.information = INFORMATION_TRAITEE;
 			return;
+		}
+
+		if (DETECT_OPT_CHUTE == 1 && VENTOUSE_BAS == 1 && VACCUM_SOLE710 == 1)
+		{
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			SET_VACCUM_SOLE710();
+			interfacePCF8574.information = INFORMATION_TRAITEE;	//si changement mais aucune condition -> lecture encore
+			interfaceADC.information = INFORMATION_TRAITEE;
+			return;
+		}
+
+		if (DETECT_OPT_CHUTE == 1 && VENTOUSE_BAS == 1 && VACCUM_SOLE710 != 1)
+		{
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			CLEAR_VENTOUSE_BAS_SOLE704();
+			SET_VENTOUSE_HAUT_SOLE707();
+			interfacePCF8574.information = INFORMATION_TRAITEE;	//si changement mais aucune condition -> lecture encore
+			interfaceADC.information = INFORMATION_TRAITEE;
+			return;
+		}
+
+		if (VENTOUSE_HAUT == 1 && VACCUM_SOLE710 != 1)
+		{
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+
+			switch (centreDeTri.couleurBloc)
+			{
+			case BLOC_NOIR:
+				CLEAR_SELECT_POS_0();
+				SET_SELECT_POS_1();
+				CLEAR_SELECT_POS_2();
+				break;
+			case BLOC_ORANGE:
+			case BLOC_METAL:
+				CLEAR_SELECT_POS_0();
+				CLEAR_SELECT_POS_1();
+				SET_SELECT_POS_2();
+				break;
+			}
+			SET_CONTROLLER_RELEASE();
+			CLEAR_START_POS_PROCESS();
+			requetePosition = REQUETE_ACTIVE;
+
+			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+						processusCentreOperationDeplacerBloc;
 		}
 	}
 
-	if (DETECT_OPT_CHUTE == 1 && VENTOUSE_HAUT == 1)
+	interfacePCF8574.information = INFORMATION_TRAITEE;	//si changement mais aucune condition -> lecture encore
+	interfaceADC.information = INFORMATION_TRAITEE;
+}
+
+void processusCentreOperationDeplacerBloc(void)
+{
+	static uint8_t compteurPont = 0;
+
+	if (requetePosition == REQUETE_ACTIVE)
+	{
+		compteurPont++;
+
+		if (compteurPont == 1)
+		{
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			SET_START_POS_PROCESS();   // start of pulse
+		}
+
+		// ensure at least N cycles before checking DEF_MOTION_COMPLETE
+		if (compteurPont >= 150 && DEF_MOTION_COMPLETE != 0)
+		{
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			CLEAR_START_POS_PROCESS(); // end pulse
+			requetePosition = REQUETE_TRAITEE;
+			compteurPont = 0;
+		}
+	}
+
+	if (requetePosition == REQUETE_TRAITEE)
 	{
 		interfacePCF8574.requete = REQUETE_ACTIVE;
 		SET_VENTOUSE_BAS_SOLE704();
 		CLEAR_VENTOUSE_HAUT_SOLE707();
+		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+				processusCentreOperationLacherBloc;
 	}
 
-	if (DETECT_OPT_CHUTE == 1 && VENTOUSE_BAS == 1)
+	interfacePCF8574.information = INFORMATION_TRAITEE;	//si changement mais aucune condition -> lecture encore
+	interfaceADC.information = INFORMATION_TRAITEE;
+}
+
+void processusCentreOperationLacherBloc(void)
+{
+
+
+	if (VENTOUSE_BAS == 1 && VENTOUSE_HAUT != 1 && VACCUM_SOLE710 != 1)
 	{
 		interfacePCF8574.requete = REQUETE_ACTIVE;
-		SET_VACCUM_SOLE710();
+		CLEAR_VACCUM_SOLE710();
 		CLEAR_VENTOUSE_BAS_SOLE704();
 		SET_VENTOUSE_HAUT_SOLE707();
+
+		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+				processusCentreOperationRetour;
 	}
 
-	if (DETECT_OPT_CHUTE != 1 && VENTOUSE_HAUT == 1 && INDIC_PRESS_VENTOUSE == 1)
+	interfacePCF8574.information = INFORMATION_TRAITEE;	//si changement mais aucune condition -> lecture encore
+	interfaceADC.information = INFORMATION_TRAITEE;
+}
+
+void processusCentreOperationRetour(void)
+{
+	static uint8_t compteurPont = 0;
+
+	if (requetePosition == REQUETE_ACTIVE)
 	{
-		interfacePCF8574.requete = REQUETE_ACTIVE;
+		compteurPont++;
 
-		switch (centreDeTri.couleurBloc)
+		if (compteurPont == 1)
 		{
-		case BLOC_NOIR:
-
-			break;
-		case BLOC_ORANGE:
-			break;
-		case BLOC_METAL:
-			break;
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			SET_START_POS_PROCESS();   // start of pulse
 		}
+
+		// ensure at least N cycles before checking DEF_MOTION_COMPLETE
+		if (compteurPont >= 150 && DEF_MOTION_COMPLETE != 0)
+		{
+			interfacePCF8574.requete = REQUETE_ACTIVE;
+			CLEAR_START_POS_PROCESS(); // end pulse
+			requetePosition = REQUETE_TRAITEE;
+			compteurPont = 0;
+
+			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+					processusCentreModeAttente;
+			return;
+		}
+	}
+
+	if (VENTOUSE_HAUT == 1 && VENTOUSE_BAS != 1 && requetePosition != REQUETE_ACTIVE)
+	{
+		SET_CONTROLLER_RELEASE();
+		SET_SELECT_POS_0();
+		CLEAR_SELECT_POS_1();
+		CLEAR_SELECT_POS_2();
+		CLEAR_START_POS_PROCESS();
+		requetePosition = REQUETE_ACTIVE;
 	}
 
 	interfacePCF8574.information = INFORMATION_TRAITEE;	//si changement mais aucune condition -> lecture encore
