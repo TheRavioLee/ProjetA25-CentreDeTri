@@ -1,0 +1,3 @@
+../Core/Src/Pilotes/pilote_LED_V.c:11:6:LEDVset	8	static
+../Core/Src/Pilotes/pilote_LED_V.c:16:6:LEDVreset	8	static
+../Core/Src/Pilotes/pilote_LED_V.c:21:6:LEDVtoggle	8	static

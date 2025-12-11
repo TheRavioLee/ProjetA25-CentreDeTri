@@ -7,6 +7,7 @@
 C_SRCS += \
 ../Core/Src/Interfaces/interface_ADC.c \
 ../Core/Src/Interfaces/interface_BoutonBleu.c \
+../Core/Src/Interfaces/interface_LEDs.c \
 ../Core/Src/Interfaces/interface_Moteur.c \
 ../Core/Src/Interfaces/interface_PCF8574.c \
 ../Core/Src/Interfaces/interface_Triac.c 
@@ -14,6 +15,7 @@ C_SRCS += \
 OBJS += \
 ./Core/Src/Interfaces/interface_ADC.o \
 ./Core/Src/Interfaces/interface_BoutonBleu.o \
+./Core/Src/Interfaces/interface_LEDs.o \
 ./Core/Src/Interfaces/interface_Moteur.o \
 ./Core/Src/Interfaces/interface_PCF8574.o \
 ./Core/Src/Interfaces/interface_Triac.o 
@@ -21,6 +23,7 @@ OBJS += \
 C_DEPS += \
 ./Core/Src/Interfaces/interface_ADC.d \
 ./Core/Src/Interfaces/interface_BoutonBleu.d \
+./Core/Src/Interfaces/interface_LEDs.d \
 ./Core/Src/Interfaces/interface_Moteur.d \
 ./Core/Src/Interfaces/interface_PCF8574.d \
 ./Core/Src/Interfaces/interface_Triac.d 
@@ -33,7 +36,7 @@ Core/Src/Interfaces/%.o Core/Src/Interfaces/%.su Core/Src/Interfaces/%.cyclo: ..
 clean: clean-Core-2f-Src-2f-Interfaces
 
 clean-Core-2f-Src-2f-Interfaces:
-	-$(RM) ./Core/Src/Interfaces/interface_ADC.cyclo ./Core/Src/Interfaces/interface_ADC.d ./Core/Src/Interfaces/interface_ADC.o ./Core/Src/Interfaces/interface_ADC.su ./Core/Src/Interfaces/interface_BoutonBleu.cyclo ./Core/Src/Interfaces/interface_BoutonBleu.d ./Core/Src/Interfaces/interface_BoutonBleu.o ./Core/Src/Interfaces/interface_BoutonBleu.su ./Core/Src/Interfaces/interface_Moteur.cyclo ./Core/Src/Interfaces/interface_Moteur.d ./Core/Src/Interfaces/interface_Moteur.o ./Core/Src/Interfaces/interface_Moteur.su ./Core/Src/Interfaces/interface_PCF8574.cyclo ./Core/Src/Interfaces/interface_PCF8574.d ./Core/Src/Interfaces/interface_PCF8574.o ./Core/Src/Interfaces/interface_PCF8574.su ./Core/Src/Interfaces/interface_Triac.cyclo ./Core/Src/Interfaces/interface_Triac.d ./Core/Src/Interfaces/interface_Triac.o ./Core/Src/Interfaces/interface_Triac.su
+	-$(RM) ./Core/Src/Interfaces/interface_ADC.cyclo ./Core/Src/Interfaces/interface_ADC.d ./Core/Src/Interfaces/interface_ADC.o ./Core/Src/Interfaces/interface_ADC.su ./Core/Src/Interfaces/interface_BoutonBleu.cyclo ./Core/Src/Interfaces/interface_BoutonBleu.d ./Core/Src/Interfaces/interface_BoutonBleu.o ./Core/Src/Interfaces/interface_BoutonBleu.su ./Core/Src/Interfaces/interface_LEDs.cyclo ./Core/Src/Interfaces/interface_LEDs.d ./Core/Src/Interfaces/interface_LEDs.o ./Core/Src/Interfaces/interface_LEDs.su ./Core/Src/Interfaces/interface_Moteur.cyclo ./Core/Src/Interfaces/interface_Moteur.d ./Core/Src/Interfaces/interface_Moteur.o ./Core/Src/Interfaces/interface_Moteur.su ./Core/Src/Interfaces/interface_PCF8574.cyclo ./Core/Src/Interfaces/interface_PCF8574.d ./Core/Src/Interfaces/interface_PCF8574.o ./Core/Src/Interfaces/interface_PCF8574.su ./Core/Src/Interfaces/interface_Triac.cyclo ./Core/Src/Interfaces/interface_Triac.d ./Core/Src/Interfaces/interface_Triac.o ./Core/Src/Interfaces/interface_Triac.su
 
 .PHONY: clean-Core-2f-Src-2f-Interfaces
 

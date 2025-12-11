@@ -5,13 +5,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Core/Src/Services/ServiceBaseTemps.c 
+../Core/Src/Services/ServiceBaseTemps.c \
+../Core/Src/Services/ServiceCAN637.c \
+../Core/Src/Services/ServiceLEDs.c 
 
 OBJS += \
-./Core/Src/Services/ServiceBaseTemps.o 
+./Core/Src/Services/ServiceBaseTemps.o \
+./Core/Src/Services/ServiceCAN637.o \
+./Core/Src/Services/ServiceLEDs.o 
 
 C_DEPS += \
-./Core/Src/Services/ServiceBaseTemps.d 
+./Core/Src/Services/ServiceBaseTemps.d \
+./Core/Src/Services/ServiceCAN637.d \
+./Core/Src/Services/ServiceLEDs.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +27,7 @@ Core/Src/Services/%.o Core/Src/Services/%.su Core/Src/Services/%.cyclo: ../Core/
 clean: clean-Core-2f-Src-2f-Services
 
 clean-Core-2f-Src-2f-Services:
-	-$(RM) ./Core/Src/Services/ServiceBaseTemps.cyclo ./Core/Src/Services/ServiceBaseTemps.d ./Core/Src/Services/ServiceBaseTemps.o ./Core/Src/Services/ServiceBaseTemps.su
+	-$(RM) ./Core/Src/Services/ServiceBaseTemps.cyclo ./Core/Src/Services/ServiceBaseTemps.d ./Core/Src/Services/ServiceBaseTemps.o ./Core/Src/Services/ServiceBaseTemps.su ./Core/Src/Services/ServiceCAN637.cyclo ./Core/Src/Services/ServiceCAN637.d ./Core/Src/Services/ServiceCAN637.o ./Core/Src/Services/ServiceCAN637.su ./Core/Src/Services/ServiceLEDs.cyclo ./Core/Src/Services/ServiceLEDs.d ./Core/Src/Services/ServiceLEDs.o ./Core/Src/Services/ServiceLEDs.su
 
 .PHONY: clean-Core-2f-Src-2f-Services
 

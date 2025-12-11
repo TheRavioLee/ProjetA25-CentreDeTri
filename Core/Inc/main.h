@@ -126,6 +126,10 @@ void Error_Handler(void);
 #define LD5_GPIO_Port GPIOD
 #define LD6_Pin GPIO_PIN_15
 #define LD6_GPIO_Port GPIOD
+#define LED_V_Pin GPIO_PIN_9
+#define LED_V_GPIO_Port GPIOC
+#define LED_J_Pin GPIO_PIN_8
+#define LED_J_GPIO_Port GPIOA
 #define VBUS_FS_Pin GPIO_PIN_9
 #define VBUS_FS_GPIO_Port GPIOA
 #define OTG_FS_ID_Pin GPIO_PIN_10
@@ -138,6 +142,8 @@ void Error_Handler(void);
 #define SWDIO_GPIO_Port GPIOA
 #define SWCLK_Pin GPIO_PIN_14
 #define SWCLK_GPIO_Port GPIOA
+#define LED_R_Pin GPIO_PIN_15
+#define LED_R_GPIO_Port GPIOA
 #define OTG_FS_OverCurrent_Pin GPIO_PIN_5
 #define OTG_FS_OverCurrent_GPIO_Port GPIOD
 #define SCL_Pin GPIO_PIN_6
@@ -151,8 +157,18 @@ void Error_Handler(void);
 #define FREQ_BASETEMPS_HZ 1000
 #define FREQ_LECTURE_BTN_HZ 100
 
+#define CAN_ID_ARRET 0x100
+#define CAN_ID_DEPART 0x101
+#define CAN_ID_COULEUR 0x103
+#define CAN_ID_ETAT 0x104
+#define CAN_ID_ERREUR 0x106
+#define PILOTECAN1_IDENTIFICATION_EN_RECEPTION      (0x100 << 5)
+#define PILOTECAN1_MASQUE_11_BITS_EN_RECEPTION      (0x7F8 << 5)
+
+#define SERVICECAN637_NOMBRE_DE_DONNEES_MAXIMUM  8
+
 //Definitions Base de temps
-#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 7 //10
+#define SERVICEBASEDETEMPS_NOMBRE_DE_PHASES 9 //11
 #define PROCESSUS_CENTRE_TRI_PHASE 0
 #define ENTREES_NUM_PHASE 1
 #define ENTREE_ANALOGUE_PHASE 2
@@ -160,19 +176,18 @@ void Error_Handler(void);
 #define INTERFACE_BTN_BLEU_PHASE 4
 #define MOTEUR_PHASE 5
 #define PROCESSUS_AFFICHAGE_PHASE 6
-//#define RECEPTION_CAN_PHASE 7
-//#define TRANSMISSION_CAN_PHASE 8
-//define TRIAC_PHASE 9
+#define RECEPTION_CAN_PHASE 7
+#define TRANSMISSION_CAN_PHASE 8
+//#define TRIAC_PHASE 9
+#define LEDS_PHASE 9
 
 
 #define INFORMATION_DISPONIBLE 1
 #define INFORMATION_TRAITEE 0
 #define REQUETE_ACTIVE 1
 #define REQUETE_TRAITEE 0
-#define READ_GOOD 1
-#define READ_FAIL 0
-#define WRITE_GOOD 1
-#define WRITE_FAIL 0
+#define MODULE_EN_FONCTION 1
+#define MODULE_PAS_EN_FONCTION 0
 
 #define BOUTON_RELACHE 0
 #define BOUTON_APPUYE 1
@@ -182,10 +197,15 @@ void Error_Handler(void);
 #define ARRET 2
 #define OPERATION 3
 #define TEST 4
+#define ERREUR 5
 
 #define BLOC_NOIR 1
 #define BLOC_ORANGE 2
 #define BLOC_METAL 3
+
+#define LED_ROUGE 1
+#define LED_VERT 2
+#define LED_JAUNE 3
 
 //Fonctions publiques
 void doNothing(void);

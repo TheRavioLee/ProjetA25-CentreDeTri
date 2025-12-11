@@ -1,0 +1,3 @@
+../Core/Src/Services/ServiceCAN637.c:25:6:serviceCan637_gereLaTransmission	8	static
+../Core/Src/Services/ServiceCAN637.c:75:7:serviceCan637_gereLaReception	24	static
+../Core/Src/Services/ServiceCAN637.c:131:6:serviceCan637_initialise	16	static

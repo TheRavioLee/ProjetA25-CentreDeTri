@@ -1,0 +1,2 @@
+../Core/Src/Services/ServiceLEDs.c:17:6:serviceLEDs_gere	8	static
+../Core/Src/Services/ServiceLEDs.c:104:6:serviceLEDsInit	4	static
