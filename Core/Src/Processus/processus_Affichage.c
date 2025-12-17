@@ -179,6 +179,9 @@ void processusAffichage_Afficher(void)
 	case TEST:
 		vPutCharGLcd('T', 7, 18, 5);
 		break;
+	case ERREUR:
+		vPutCharGLcd('E', 7, 18, 5);
+		break;
 	}
 	switch (centreDeTri.couleurBloc)
 	{

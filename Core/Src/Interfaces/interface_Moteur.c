@@ -12,9 +12,10 @@
 #include "pilote_MoteurPH4.h"
 #include "interface_Moteur.h"
 
-void simuleMoteur(void);
+void gere_Moteur(void);
+void controleMoteur(uint8_t ph1, uint8_t ph2, uint8_t ph3, uint8_t ph4);
 
-uint16_t compteurMoteur;
+uint8_t compteurMoteur;
 
 uint8_t sequence_halfstep[8][4] = {
 		{1,0,0,0},
@@ -35,19 +36,27 @@ void controleMoteur(uint8_t ph1, uint8_t ph2, uint8_t ph3, uint8_t ph4)
 	ph4 == 1 ? moteurPH4_set() : moteurPH4_reset();
 }
 
-//Modifier fonction et struct interface pour init en arret
-//si requete processusCentreDeTri -> demarrer moteur
-// attente.....
-//Remonter jusqua limit switch et arreter
-
-void simuleMoteur(void)
+void gere_Moteur(void)
 {
 	static int8_t step_index = 0;
 
+	if (interfaceMoteur.requete != REQUETE_ACTIVE)
+	{
+		return;
+	}
+
 	compteurMoteur++;
 
-	if (compteurMoteur == interfaceMoteur.vitesseMoteur)
+	if (compteurMoteur >= interfaceMoteur.vitesseMoteur)
 	{
+		interfaceMoteur.nombre_steps--;
+
+		if (interfaceMoteur.nombre_steps == 0)
+		{
+			interfaceMoteur.requete = REQUETE_TRAITEE;
+			return;
+		}
+
 		compteurMoteur = 0;
 
 		step_index += interfaceMoteur.directionMoteur;
@@ -72,8 +81,11 @@ void interfaceMoteur_Init(void)
 	moteurPH3_reset();
 	moteurPH4_reset();
 
+
+	interfaceMoteur.requete = REQUETE_ACTIVE;
 	interfaceMoteur.directionMoteur = MONTER;
-	interfaceMoteur.vitesseMoteur = VITESSE_LENT;
+	interfaceMoteur.vitesseMoteur = VITESSE_RAPIDE;
 	compteurMoteur = 0;
-//	serviceBaseDeTemps_execute[MOTEUR_PHASE] = simuleMoteur;
+	interfaceMoteur.nombre_steps = STEPS_LONGUEUR_TOTALE;
+	serviceBaseDeTemps_execute[MOTEUR_PHASE] = gere_Moteur;
 }

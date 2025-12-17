@@ -5,6 +5,7 @@
  *      Author: thomaslajoie
  */
 #include <pilote_Timers.h>
+#include "serviceTriac.h"
 #include "main.h"
 //Declarations de fonctions privees:
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
@@ -28,6 +29,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   }
   if(htim == &htim2)
   {
+	  serviceTriac_ITTimer7();
 	  //Timer pour detection passage par zero
 	  //mettre compteur a 0 lors de passage a zero pour compter 100us
   }

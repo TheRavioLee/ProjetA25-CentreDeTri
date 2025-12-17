@@ -1,0 +1,3 @@
+../Core/Src/Pilotes/pilote_LED_R.c:11:6:LEDRset	1
+../Core/Src/Pilotes/pilote_LED_R.c:16:6:LEDRreset	1
+../Core/Src/Pilotes/pilote_LED_R.c:21:6:LEDRtoggle	1

@@ -1,0 +1,5 @@
+../Core/Src/Processus/processusAscenseur.c:15:6:processusTriac_initialise	1
+../Core/Src/Processus/processusAscenseur.c:29:6:processusTriac_demarre	1
+../Core/Src/Processus/processusAscenseur.c:38:6:processusTriac_arrete	1
+../Core/Src/Processus/processusAscenseur.c:48:15:processusTriac_obtenirNiveau	1
+../Core/Src/Processus/processusAscenseur.c:57:6:processusTriac_gere	8

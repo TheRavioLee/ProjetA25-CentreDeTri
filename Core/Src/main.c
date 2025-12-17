@@ -30,6 +30,9 @@
 #include "pilote_MoteurPH2.h"
 #include "pilote_MoteurPH3.h"
 #include "pilote_MoteurPH4.h"
+#include "pilote_LED_J.h"
+#include "pilote_LED_V.h"
+#include "pilote_LED_R.h"
 #include "pilote_BoutonBleu.h"
 #include "pilote_Timers.h"
 #include "pilote_CAN.h"
@@ -40,8 +43,11 @@
 #include "interface_PCF8574.h"
 #include "interface_ADC.h"
 #include "interface_BoutonBleu.h"
+#include "interface_LEDs.h"
 
 #include "ServiceBaseTemps.h"
+#include "ServiceCAN637.h"
+#include "ServiceLEDs.h"
 
 #include "processus_Affichage.h"
 #include "processusCentreDeTri.h"
@@ -107,6 +113,11 @@ void Main_Init(void)
 	processusSortiesNum_Init();
 	processusAffichageInit();
 	processusCentreDeTri_Init();
+	piloteCAN1_initialise();
+	serviceCan637_initialise();
+	serviceLEDsInit();
+	serviceTriac_initialise();
+	processusTriac_initialise();
 }
 
 void doNothing(void){}
@@ -229,11 +240,11 @@ static void MX_CAN1_Init(void)
 
   /* USER CODE END CAN1_Init 1 */
   hcan1.Instance = CAN1;
-  hcan1.Init.Prescaler = 16;
+  hcan1.Init.Prescaler = 21;
   hcan1.Init.Mode = CAN_MODE_NORMAL;
   hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan1.Init.TimeSeg1 = CAN_BS1_1TQ;
-  hcan1.Init.TimeSeg2 = CAN_BS2_1TQ;
+  hcan1.Init.TimeSeg1 = CAN_BS1_13TQ;
+  hcan1.Init.TimeSeg2 = CAN_BS2_2TQ;
   hcan1.Init.TimeTriggeredMode = DISABLE;
   hcan1.Init.AutoBusOff = DISABLE;
   hcan1.Init.AutoWakeUp = DISABLE;
@@ -389,7 +400,8 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, PHASE_4_Pin|PHASE_2_Pin|PHASE_3_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, PHASE_4_Pin|PHASE_2_Pin|PHASE_3_Pin|LED_J_Pin
+                          |LED_R_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, RD_Pin|A4_Pin|CS0_Pin|CS1_Pin
@@ -398,6 +410,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, A0_Pin|A1_Pin|A2_Pin|A3_Pin
                           |LD4_Pin|LD3_Pin|LD5_Pin|LD6_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LED_V_GPIO_Port, LED_V_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : TRIAC_CTRL_Pin D0_Pin D1_Pin D2_Pin
                            D3_Pin D4_Pin D5_Pin D6_Pin
@@ -416,12 +431,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(TRIAC_EXTI_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : OTG_FS_PowerSwitchOn_Pin */
-  GPIO_InitStruct.Pin = OTG_FS_PowerSwitchOn_Pin;
+  /*Configure GPIO pins : OTG_FS_PowerSwitchOn_Pin LED_V_Pin */
+  GPIO_InitStruct.Pin = OTG_FS_PowerSwitchOn_Pin|LED_V_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(OTG_FS_PowerSwitchOn_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : BTN_BLEU_Pin */
   GPIO_InitStruct.Pin = BTN_BLEU_Pin;
@@ -429,8 +444,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BTN_BLEU_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PHASE_4_Pin PHASE_2_Pin PHASE_3_Pin */
-  GPIO_InitStruct.Pin = PHASE_4_Pin|PHASE_2_Pin|PHASE_3_Pin;
+  /*Configure GPIO pins : PHASE_4_Pin PHASE_2_Pin PHASE_3_Pin LED_J_Pin
+                           LED_R_Pin */
+  GPIO_InitStruct.Pin = PHASE_4_Pin|PHASE_2_Pin|PHASE_3_Pin|LED_J_Pin
+                          |LED_R_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

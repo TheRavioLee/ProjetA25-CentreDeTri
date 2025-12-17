@@ -1,0 +1,8 @@
+../Core/Src/Services/serviceTriac.c:22:6:serviceTriac_initialise	1
+../Core/Src/Services/serviceTriac.c:35:6:serviceTriac_active	1
+../Core/Src/Services/serviceTriac.c:43:6:serviceTriac_desactive	1
+../Core/Src/Services/serviceTriac.c:54:15:serviceTriac_estActif	1
+../Core/Src/Services/serviceTriac.c:63:6:serviceTriac_fixeNiveau	4
+../Core/Src/Services/serviceTriac.c:92:15:serviceTriac_obtenirNiveau	1
+../Core/Src/Services/serviceTriac.c:100:6:serviceTriac_ITTimer7	6
+../Core/Src/Services/serviceTriac.c:139:6:serviceTriac_ITZeroCross	2
