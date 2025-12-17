@@ -116,6 +116,8 @@ void Main_Init(void)
 	piloteCAN1_initialise();
 	serviceCan637_initialise();
 	serviceLEDsInit();
+	serviceTriac_initialise();
+	processusTriac_initialise();
 }
 
 void doNothing(void){}

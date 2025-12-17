@@ -10,6 +10,7 @@
 #include "interface_ADC.h"
 #include "interface_PCF8574.h"
 #include "interface_BoutonBleu.h"
+#include "interface_Moteur.h"
 #include "processusEntreesNumeriques.h"
 #include "processusEntreeAnalogique.h"
 #include "processusSortiesNumeriques.h"
@@ -50,6 +51,8 @@ void processusCentreOperationVentouse(void);
 void processusCentreOperationDeplacerBloc(void);
 void processusCentreOperationLacherBloc(void);
 void processusCentreOperationRetour(void);
+void processusCentreOperationMoteurDescendre(void);
+void processusCentreOperationMoteurMonter(void);
 
 void processusCentreModeArret(void);
 void processusCentreModeErreur(void);
@@ -356,6 +359,10 @@ void processusCentreModeAttente(void)
 		INFO_BTN_BLEU = INFORMATION_TRAITEE;
 		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
 				processusCentreModeTest;
+
+
+		interfaceMoteur.requete = REQUETE_ACTIVE;
+		interfaceMoteur.directionMoteur = MONTER;
 		return;
 	}
 
@@ -1397,7 +1404,7 @@ void processusCentreOperationLacherBloc(void)
 	}
 
 	if (VENTOUSE_BAS == 1 && VENTOUSE_HAUT != 1 && VACCUM_SOLE710 != 1
-			&& processusCentreReceptionPosition() == 1)
+			/*&& processusCentreReceptionPosition() == 1			 */)
 	{
 		interfacePCF8574.requete = REQUETE_ACTIVE;
 		CLEAR_VACCUM_SOLE710();
@@ -1468,15 +1475,8 @@ void processusCentreOperationRetour(void)
 			requetePosition = REQUETE_TRAITEE;
 			compteurPont = 0;
 
-			//RESET COULEUR BLOC
-			centreDeTri.couleurBloc = 0;
-			//Mode ATTENTE pour transmettre etat terminer
-			centreDeTri.mode = ATTENTE;
-
-			processusCentreTransmettreEtat();
-
 			serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
-					processusCentreModeAttente;
+					processusCentreOperationMoteurDescendre;
 			return;
 		}
 	}
@@ -1495,8 +1495,59 @@ void processusCentreOperationRetour(void)
 	interfaceADC.information = INFORMATION_TRAITEE;
 }
 
+void processusCentreOperationMoteurDescendre(void)
+{
+	static uint8_t compteurAscenceur = 0;
+
+	compteurAscenceur++;
+
+	if (compteurAscenceur == TEMPS_MAXIMUM)
+	{
+		compteurAscenceur = 0;
+		interfaceMoteur.requete = REQUETE_ACTIVE;
+		interfaceMoteur.directionMoteur = DESCENDRE;
+		interfaceMoteur.vitesseMoteur = VITESSE_RAPIDE;
+		interfaceMoteur.nombre_steps = STEPS_LONGUEUR_TOTALE;
+
+		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+				processusCentreOperationMoteurMonter;
+	}
+
+}
+
+void processusCentreOperationMoteurMonter(void)
+{
+	static uint8_t compteurAscenceur = 0;
+
+	compteurAscenceur++;
+
+	if (compteurAscenceur == TEMPS_MAXIMUM)
+	{
+		if (interfaceMoteur.requete != REQUETE_TRAITEE)
+		{
+			return;
+		}
+		compteurAscenceur = 0;
+		interfaceMoteur.requete = REQUETE_ACTIVE;
+		interfaceMoteur.directionMoteur = MONTER;
+		interfaceMoteur.vitesseMoteur = VITESSE_RAPIDE;
+		interfaceMoteur.nombre_steps = STEPS_LONGUEUR_TOTALE;
+
+		//RESET COULEUR BLOC
+		centreDeTri.couleurBloc = 0;
+		//Mode ATTENTE pour transmettre etat terminer
+		centreDeTri.mode = ATTENTE;
+
+		processusCentreTransmettreEtat();
+
+		serviceBaseDeTemps_execute[PROCESSUS_CENTRE_TRI_PHASE] =
+				processusCentreModeAttente;
+	}
+}
+
 void processusCentreModeErreur(void)
 {
+	centreDeTri.mode = ERREUR;
 	if (serviceCan637.requete == REQUETE_TRAITEE)
 	{
 //		piloteTimer14_arreteLesInterruptions();

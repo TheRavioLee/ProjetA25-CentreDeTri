@@ -39,9 +39,9 @@ void serviceLEDs_gere(void)
 				eteindreLED(LED_VERT);
 				break;
 			case BLOC_METAL:
-				allumerLED(LED_JAUNE);
+				allumerLED(LED_VERT);
 				eteindreLED(LED_ROUGE);
-				eteindreLED(LED_VERT);
+				eteindreLED(LED_JAUNE);
 				break;
 			}
 		}
